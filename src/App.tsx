@@ -5,9 +5,12 @@ import Timetable from "./models/Timetable.ts";
 import Day from "./models/Day.ts";
 import Hour from "./models/Hour.ts";
 import Lesson from "./models/Lesson.ts";
+import TimeRemaining from "./components/TimeRemaining.tsx";
+import HourTime from "./models/HourTime.ts";
+import {DateTime} from "luxon";
 
 function App() {
-    const [timetable, setTimetable] = useState<Timetable | null>();
+    const [timetable, setTimetable] = useState<Timetable | null>(null);
 
     useEffect(() => {
         const url = 'https://delta-skola.bakalari.cz/Timetable/Public/Actual/Class/3Q';
@@ -54,7 +57,6 @@ function App() {
                     }
 
                     const day: Day = {
-                        name: "pondělí",
                         hours: hours,
                     }
                     days.push(day);
@@ -72,9 +74,21 @@ function App() {
             });
     }, []);
 
+    const hourTimes: HourTime[] = [
+        {start: DateTime.fromObject({hour: 8, minute: 0}), end: DateTime.fromObject({hour: 8, minute: 45})},
+        {start: DateTime.fromObject({hour: 8, minute: 50}), end: DateTime.fromObject({hour: 9, minute: 35})},
+        {start: DateTime.fromObject({hour: 9, minute: 50}), end: DateTime.fromObject({hour: 10, minute: 35})},
+        {start: DateTime.fromObject({hour: 10, minute: 40}), end: DateTime.fromObject({hour: 11, minute: 25})},
+        {start: DateTime.fromObject({hour: 11, minute: 35}), end: DateTime.fromObject({hour: 12, minute: 20})},
+        {start: DateTime.fromObject({hour: 12, minute: 25}), end: DateTime.fromObject({hour: 13, minute: 10})},
+        {start: DateTime.fromObject({hour: 13, minute: 15}), end: DateTime.fromObject({hour: 14, minute: 0})},
+        {start: DateTime.fromObject({hour: 14, minute: 0}), end: DateTime.fromObject({hour: 14, minute: 45})},
+        {start: DateTime.fromObject({hour: 14, minute: 45}), end: DateTime.fromObject({hour: 15, minute: 30})},
+    ];
+
     return (
         <div>
-            {timetable && <p>timetable</p>}
+            <TimeRemaining hourTime={hourTimes[5]}/>
         </div>
     );
 }
