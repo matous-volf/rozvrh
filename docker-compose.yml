@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  vite:
+    build: .
+    ports:
+      - "80:8000"
+    volumes:
+      - ./:/srv/app
+    tty: true
