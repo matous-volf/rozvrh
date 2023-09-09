@@ -7,6 +7,7 @@ import Hour from "./models/Hour.ts";
 import Lesson from "./models/Lesson.ts";
 import TimeRemaining from "./components/TimeRemaining.tsx";
 import {DateTime} from "luxon";
+import Lessons from "./components/Lessons.tsx";
 import hourTimes from "./data/hourTimes.ts";
 
 function App() {
@@ -74,11 +75,49 @@ function App() {
             });
     }, []);
 
+    const [currentTime, setCurrentTime] = useState(DateTime.now());
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentTime(DateTime.now().minus({hour: 0, minute: 0, second: 0}));
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        }
+    }, []);
+
+    if (timetable === null) {
+        return (
+            <div>
+                <p>Načítání...</p>
+            </div>
+        );
+    }
+
+    const dayIndex: number = currentTime.weekday - 1;
+    if (dayIndex > 4) {
+        return (
+            <>
+                <p>Dnes vyučování neprobíhá.</p>
+            </>
+        )
+    }
+
+    const hours = timetable.days[dayIndex].hours;
+    const firstHourIndex = hours.findIndex((hour) => {
+        return hour.lessons.length > 0;
+    });
+    const lastHourIndex = hours.findLastIndex((hour) => {
+        return hour.lessons.length > 0;
+    });
 
     return (
         <div>
+            <p>{currentTime.toFormat("HH:mm:ss")}</p>
             <TimeRemaining currentTime={currentTime} hourTimes={hourTimes} firstHourIndex={firstHourIndex}
                            lastHourIndex={lastHourIndex}/>
+            <Lessons currentTime={currentTime} hourTimes={hourTimes} hours={hours} firstHourIndex={firstHourIndex}
+                     lastHourIndex={lastHourIndex}/>
         </div>
     );
 }
