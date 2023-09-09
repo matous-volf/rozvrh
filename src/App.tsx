@@ -1,5 +1,5 @@
-import './App.css'
-import * as cheerio from 'cheerio';
+import "./App.css"
+import * as cheerio from "cheerio";
 import {useEffect, useState} from "react";
 import Timetable from "./models/Timetable.ts";
 import Day from "./models/Day.ts";
@@ -14,12 +14,12 @@ function App() {
     const [timetable, setTimetable] = useState<Timetable | null>(null);
 
     useEffect(() => {
-        const url = 'https://delta-skola.bakalari.cz/Timetable/Public/Actual/Class/3Q';
+        const url = "https://delta-skola.bakalari.cz/Timetable/Public/Actual/Class/3Q";
 
         fetch(url)
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error("Network response was not ok");
                 }
                 return response.text();
             })
@@ -71,7 +71,7 @@ function App() {
                 setTimetable(timetable);
             })
             .catch((error) => {
-                console.error('Error fetching webpage:', error);
+                console.error("Error fetching webpage:", error);
             });
     }, []);
 
@@ -94,7 +94,7 @@ function App() {
         );
     }
 
-    const dayIndex: number = currentTime.weekday - 1;
+    const dayIndex: number = currentTime.weekday - 2; // !!!
     if (dayIndex > 4) {
         return (
             <>

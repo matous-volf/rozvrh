@@ -1,5 +1,5 @@
 import HourTime from "../models/HourTime.ts";
-import {DateTime} from 'luxon';
+import {DateTime} from "luxon";
 
 interface Props {
     currentTime: DateTime;
