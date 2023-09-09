@@ -10,6 +10,7 @@ interface Props {
     hours: Hour[];
     firstHourIndex: number;
     lastHourIndex: number;
+    selectedGroups: string[];
 }
 
 function Lessons(props: Props) {
@@ -28,29 +29,31 @@ function Lessons(props: Props) {
             }
             nextHourIndex = i;
             isBreak = true;
+
+            if (!props.hours[nextHourIndex].isSelected) {
+                currentHourIndex = null;
+                nextHourIndex = i + props.hours.slice(i).findIndex((hour) => hour.isSelected);
+                isBreak = false;
+            }
         } else {
             currentHourIndex = i;
-            if (i < props.hourTimes.length - 1) {
+
+            if (i < props.lastHourIndex) {
                 nextHourIndex = i + 1;
             }
         }
+
         break;
     }
 
     let currentLesson: Lesson | null = null;
     if (currentHourIndex !== null) {
-        // group
-        if (props.hours[currentHourIndex].lessons.length > 0) {
-            currentLesson = props.hours[currentHourIndex].lessons[0];
-        }
+        currentLesson = props.hours[currentHourIndex].selectedLesson;
     }
 
     let nextLesson: Lesson | null = null;
     if (nextHourIndex !== null) {
-        // group
-        if (props.hours[nextHourIndex].lessons.length > 0) {
-            nextLesson = props.hours[nextHourIndex].lessons[0];
-        }
+        nextLesson = props.hours[nextHourIndex].selectedLesson;
     }
 
     return (
