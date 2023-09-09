@@ -77,7 +77,8 @@ function App() {
 
     return (
         <div>
-            <TimeRemaining hourTime={hourTimes[5]}/>
+            <TimeRemaining currentTime={currentTime} hourTimes={hourTimes} firstHourIndex={firstHourIndex}
+                           lastHourIndex={lastHourIndex}/>
         </div>
     );
 }

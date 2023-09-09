@@ -1,33 +1,38 @@
 import HourTime from "../models/HourTime.ts";
-import {useEffect, useState} from "react";
 import {DateTime} from 'luxon';
 
 interface Props {
-    hourTime: HourTime;
+    currentTime: DateTime;
+    hourTimes: HourTime[];
+    firstHourIndex: number;
+    lastHourIndex: number;
 }
 
 function TimeRemaining(props: Props) {
-    const [currentTime, setCurrentTime] = useState(DateTime.now());
-
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCurrentTime(DateTime.now());
-        }, 1000);
-
-        return () => {
-            clearInterval(intervalId);
+    let hourIndex: number | null = null;
+    for (let i = props.firstHourIndex; i <= props.lastHourIndex; i++) {
+        if (props.currentTime > props.hourTimes[i].end) {
+            continue;
         }
-    }, []);
 
-    let awaitedTime: DateTime;
-
-    if (currentTime < props.hourTime.start) {
-        awaitedTime = props.hourTime.start;
-    } else {
-        awaitedTime = props.hourTime.end;
+        hourIndex = i;
+        break;
+    }
+    if (hourIndex === null) {
+        return (
+            <>Vyučování skončilo.</>
+        )
     }
 
-    const timeRemaining = awaitedTime.diff(currentTime);
+    const hourTime = props.hourTimes[hourIndex];
+    let awaitedTime: DateTime;
+    if (props.currentTime < hourTime.start) {
+        awaitedTime = hourTime.start;
+    } else {
+        awaitedTime = hourTime.end;
+    }
+
+    const timeRemaining = awaitedTime.diff(props.currentTime);
 
     return (
         <>
