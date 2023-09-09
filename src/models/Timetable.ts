@@ -1,7 +1,12 @@
 import Day from "./Day.ts";
 
-interface Timetable {
+class Timetable {
     days: Day[];
+
+
+    constructor(days: Day[]) {
+        this.days = days;
+    }
 }
 
 export default Timetable;
