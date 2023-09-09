@@ -1,6 +1,6 @@
-import './App.css'
-import * as cheerio from 'cheerio';
-import {useEffect, useState} from "react";
+import "./App.css"
+import * as cheerio from "cheerio";
+import {useCallback, useEffect, useState} from "react";
 import Timetable from "./models/Timetable.ts";
 import Day from "./models/Day.ts";
 import Hour from "./models/Hour.ts";
@@ -9,17 +9,25 @@ import TimeRemaining from "./components/TimeRemaining.tsx";
 import {DateTime} from "luxon";
 import Lessons from "./components/Lessons.tsx";
 import hourTimes from "./data/hourTimes.ts";
+import {useCookies} from "react-cookie";
+import GroupSettings from "./components/GroupSettings.tsx";
 
 function App() {
+    const [cookies, setCookies] = useCookies(["selectedGroups"]);
+    const selectedGroups: string[] = cookies.selectedGroups;
+    if (selectedGroups === undefined) {
+        setCookies("selectedGroups", ["S1", "ZIM"]);
+    }
+
     const [timetable, setTimetable] = useState<Timetable | null>(null);
 
     useEffect(() => {
-        const url = 'https://delta-skola.bakalari.cz/Timetable/Public/Actual/Class/3Q';
+        const url = "https://delta-skola.bakalari.cz/Timetable/Public/Actual/Class/3Q";
 
         fetch(url)
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error("Network response was not ok");
                 }
                 return response.text();
             })
@@ -42,49 +50,43 @@ function App() {
                             const room = $(dayItem).find(".top > .right > div").text();
                             const teacher = $(dayItem).find(".bottom > span").text();
 
-                            const lesson: Lesson = {
-                                subject: subject,
-                                group: group ? group : null,
-                                room: room,
-                                teacher: teacher,
-                            };
-                            lessons.push(lesson);
+                            lessons.push(new Lesson(subject, group, room, teacher));
                         }
 
-                        const hour: Hour = {
-                            lessons: lessons,
-                        };
-                        hours.push(hour);
+                        const selectedLesson = lessons.find((lesson) =>
+                            lesson.group === null || selectedGroups.includes(lesson.group));
+
+                        hours.push(new Hour(lessons, selectedLesson !== undefined ? selectedLesson : null));
                     }
 
-                    const day: Day = {
-                        hours: hours,
-                    }
-                    days.push(day);
+                    days.push(new Day(hours));
                 }
 
-                const timetable: Timetable = {
-                    days: days,
-                }
+                const timetable = new Timetable(days);
 
-                console.log(timetable);
                 setTimetable(timetable);
             })
             .catch((error) => {
-                console.error('Error fetching webpage:', error);
+                console.error("Error fetching webpage:", error);
             });
-    }, []);
+    }, [selectedGroups]);
 
     const [currentTime, setCurrentTime] = useState(DateTime.now());
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setCurrentTime(DateTime.now().minus({hour: 0, minute: 0, second: 0}));
+            setCurrentTime(DateTime.now());
         }, 1000);
 
         return () => {
             clearInterval(intervalId);
         }
     }, []);
+
+    const handleSelectedGroupsChange = useCallback((groups: string[]) => {
+            console.log(groups);
+            setCookies("selectedGroups", groups);
+        }, [setCookies]
+    );
 
     if (timetable === null) {
         return (
@@ -104,20 +106,26 @@ function App() {
     }
 
     const hours = timetable.days[dayIndex].hours;
-    const firstHourIndex = hours.findIndex((hour) => {
-        return hour.lessons.length > 0;
-    });
-    const lastHourIndex = hours.findLastIndex((hour) => {
-        return hour.lessons.length > 0;
-    });
+    const firstHourIndex = hours.findIndex((hour) => hour.isSelected);
+    const lastHourIndex = hours.findLastIndex((hour) => hour.isSelected);
+
+    if (firstHourIndex === -1 || lastHourIndex === -1) {
+        return (
+            <>
+                <p>Zvolte třídu a skupiny.</p>
+            </>
+        )
+    }
 
     return (
         <div>
+            <GroupSettings timetable={timetable} selectedGroups={selectedGroups}
+                           setSelectedGroupsCallback={handleSelectedGroupsChange}/>
             <p>{currentTime.toFormat("HH:mm:ss")}</p>
-            <TimeRemaining currentTime={currentTime} hourTimes={hourTimes} firstHourIndex={firstHourIndex}
-                           lastHourIndex={lastHourIndex}/>
+            <TimeRemaining currentTime={currentTime} hourTimes={hourTimes} hours={hours} firstHourIndex={firstHourIndex}
+                           lastHourIndex={lastHourIndex} selectedGroups={selectedGroups}/>
             <Lessons currentTime={currentTime} hourTimes={hourTimes} hours={hours} firstHourIndex={firstHourIndex}
-                     lastHourIndex={lastHourIndex}/>
+                     lastHourIndex={lastHourIndex} selectedGroups={selectedGroups}/>
         </div>
     );
 }
