@@ -32,7 +32,9 @@ function GroupSettings(props: Props) {
         const group = e.target.value;
 
         setSelectedGroups((prevSelectedGroups) => {
-            const newSelectedGroups = [...prevSelectedGroups];
+            // The filter is basically an intersection of the two arrays. This cleans up any previously selected groups
+            // that are no longer available.
+            const newSelectedGroups = groups.filter((group) => prevSelectedGroups.includes(group));
 
             if (e.target.checked && !newSelectedGroups.includes(group)) {
                 newSelectedGroups.push(group);
