@@ -9,24 +9,7 @@ interface Props {
 }
 
 function GroupSettings(props: Props) {
-    const [groups, setGroups] = useState<string[]>([]);
     const [selectedGroups, setSelectedGroups] = useState<string[]>(props.selectedGroups);
-
-    useEffect(() => {
-        const groups: string[] = [];
-        for (const day of props.timetable.days) {
-            for (const hour of day.hours) {
-                for (const lesson of hour.lessons) {
-                    if (lesson.group === null || lesson.group.trim() === "" || groups.includes(lesson.group)) {
-                        continue;
-                    }
-
-                    groups.push(lesson.group);
-                }
-            }
-        }
-        setGroups(groups);
-    }, [props.timetable.days]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const group = e.target.value;
@@ -53,7 +36,7 @@ function GroupSettings(props: Props) {
 
     return (
         <>
-            {groups.sort().map((group) => (
+            {props.timetable.groups.sort().map((group) => (
                 <div key={nanoid()}>
                     <input type="checkbox" name="groups" value={group} id={"input_groups_" + group}
                            onChange={handleChange} checked={selectedGroups.includes(group)}/>
