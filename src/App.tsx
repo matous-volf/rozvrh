@@ -100,7 +100,7 @@ function App() {
     if (dayIndex > 4) {
         return (
             <>
-                <p>Dnes vyučování neprobíhá.</p>
+                <p>Dnes není pracovní den.</p>
             </>
         )
     }
@@ -112,7 +112,8 @@ function App() {
     if (firstHourIndex === -1 || lastHourIndex === -1) {
         return (
             <>
-                <p>Zvolte třídu a skupiny.</p>
+                <p>Dnes není žádné vyučování.</p>
+                <p>Můžete si upravit třídu a skupiny v nastavení.</p>
             </>
         )
     }
