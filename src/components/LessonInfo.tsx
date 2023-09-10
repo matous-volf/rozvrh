@@ -8,23 +8,19 @@ interface Props {
 function LessonInfo(props: Props) {
     if (props.lesson === null) {
         return (
-            <>
-                volno
-            </>
+            <span className="fw-bold">volno</span>
         );
     }
 
     if (props.isBreak) {
         return (
-            <>
-                přestávka
-            </>
+            <span className="fw-bold">přestávka</span>
         );
     }
 
     return (
         <>
-            {props.lesson.subject} {props.lesson.room}
+            <span className="fw-bold">{props.lesson.subject}</span> {props.lesson.room}
         </>
     );
 }

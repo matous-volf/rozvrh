@@ -3,6 +3,7 @@ import {nanoid} from "nanoid";
 import {useQuery} from "@tanstack/react-query";
 import {getClassIds} from "../api/bakalariScraper.ts";
 import ClassId from "../models/ClassId.ts";
+import {FormSelect} from "react-bootstrap";
 
 interface Props {
     selectedClassId: string | null;
@@ -17,7 +18,7 @@ function ClassIdSettings(props: Props) {
         setSelectedClassIdCallback(selectedClassId);
     }, [setSelectedClassIdCallback, selectedClassId]);
 
-    const {data, isLoading, isError} = useQuery({
+    const {data, isLoading} = useQuery({
         queryKey: ["classIds"],
         queryFn: () => getClassIds(),
     });
@@ -25,35 +26,10 @@ function ClassIdSettings(props: Props) {
     const classIds: ClassId[] = useMemo(() => data === undefined ? [] : data, [data])
 
     useEffect(() => {
-        if (classIds.length < 1) {
+        if (!isLoading && classIds.length < 1) {
             setSelectedClassId(null);
         }
-    }, [classIds]);
-
-    if (isLoading) {
-        return (
-            <>
-                <p>Načítání...</p>
-            </>
-        )
-    }
-
-    if (isError) {
-        return (
-            <>
-                <p>Načítání tříd se nezdařilo.</p>
-                <p>Zkontrolujte připojení k internetu.</p>
-            </>
-        )
-    }
-
-    if (classIds.length < 1) {
-        return (
-            <>
-                <p>Nejsou dostupné žádné třídy.</p>
-            </>
-        )
-    }
+    }, [classIds, isLoading]);
 
     const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         setSelectedClassId(e.target.value);
@@ -61,12 +37,13 @@ function ClassIdSettings(props: Props) {
 
     return (
         <>
-            <select onChange={handleChange} value={selectedClassId ?? ""}>
+            <h2>Třída</h2>
+            <FormSelect onChange={handleChange} value={selectedClassId ?? ""} id="class-select" className="w-auto">
                 {selectedClassId === null && <option></option>}
                 {classIds.map((classId) => (
                     <option key={nanoid()} value={classId.id}>{classId.name}</option>
                 ))}
-            </select>
+            </FormSelect>
         </>
     );
 }
