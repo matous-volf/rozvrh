@@ -1,0 +1,15 @@
+{
+  "name": "Rozvrh hodin",
+  "short_name": "Rozvrh",
+  "background_color": "#40a351",
+  "description": "Zobrazuje nynější a následující předmět a čas zbývající do další hodiny na Deltě.",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/assets/images/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/"
+}
