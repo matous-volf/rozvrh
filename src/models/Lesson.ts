@@ -6,7 +6,7 @@ class Lesson {
 
     constructor(subject: string, group: string | null, room: string, teacher: string) {
         this.subject = subject;
-        this.group = group;
+        this.group = group === "" ? null : group;
         this.room = room;
         this.teacher = teacher;
     }
