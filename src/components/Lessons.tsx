@@ -57,14 +57,17 @@ function Lessons(props: Props) {
     }
 
     return (
-        <>
-            <p>
-                <LessonInfo isBreak={isBreak} lesson={currentLesson}/>
-            </p>
-            <p>
-                <LessonInfo isBreak={false} lesson={nextLesson}/>
-            </p>
-        </>
+        <div className="d-flex flex-column justify-content-center align-items-center">
+            <div>
+                <p>
+                    <LessonInfo isBreak={isBreak} lesson={currentLesson}/>
+                </p>
+                <hr/>
+                <p>
+                    <LessonInfo isBreak={false} lesson={nextLesson}/>
+                </p>
+            </div>
+        </div>
     );
 }
 

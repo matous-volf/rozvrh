@@ -1,6 +1,7 @@
-import Timetable from "../models/Timetable.ts";
 import {ChangeEvent, useEffect, useState} from "react";
 import {nanoid} from "nanoid";
+import Timetable from "../models/Timetable.ts";
+import {FormCheck} from "react-bootstrap";
 
 interface Props {
     timetable: Timetable;
@@ -17,7 +18,7 @@ function GroupSettings(props: Props) {
         setSelectedGroups((prevSelectedGroups) => {
             // The filter is basically an intersection of the two arrays. This cleans up any previously selected groups
             // that are no longer available.
-            const newSelectedGroups = groups.filter((group) => prevSelectedGroups.includes(group));
+            const newSelectedGroups = props.timetable.groups.filter((group) => prevSelectedGroups.includes(group));
 
             if (e.target.checked && !newSelectedGroups.includes(group)) {
                 newSelectedGroups.push(group);
@@ -38,13 +39,14 @@ function GroupSettings(props: Props) {
 
     return (
         <>
+            <h2>Skupiny</h2>
+
             {props.timetable.groups.sort().map((group) => (
-                <div key={nanoid()}>
-                    <input type="checkbox" name="groups" value={group} id={"input_groups_" + group}
-                           onChange={handleChange} checked={selectedGroups.includes(group)}/>
-                    <label htmlFor={"input_groups_" + group}>{group}</label>
-                </div>
+                <FormCheck name="groups" value={group} id={"input_groups_" + group} onChange={handleChange}
+                           checked={selectedGroups.includes(group)} label={group} key={nanoid()}>
+                </FormCheck>
             ))}
+
         </>
     );
 }
