@@ -19,7 +19,7 @@ function MainPage(props: Props) {
     }
 
     return (
-        <div className="h-100 d-flex flex-column justify-content-center align-items-center text-center">
+        <div className="h-100 d-flex flex-column justify-content-center align-items-center text-center p-5">
             <Button variant="outline-secondary" href="/nastaveni">
                 <i className="bi bi-gear-fill"></i> nastavení
             </Button>

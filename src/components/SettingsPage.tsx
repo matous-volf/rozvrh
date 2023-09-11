@@ -19,7 +19,7 @@ function SettingsPage(props: Props) {
         setSelectedGroups(groups);
     }
 
-    const handleBack = () => {
+    const handleSave = () => {
         props.setSelectedGroupsCallback(selectedGroups);
     }
 
@@ -30,7 +30,7 @@ function SettingsPage(props: Props) {
     }
 
     return (
-        <div className="container d-flex flex-column align-items-start gap-3" style={{maxWidth: "576px"}}>
+        <div className="container d-flex flex-column align-items-start gap-3 p-4" style={{maxWidth: "576px"}}>
             <h1>Nastavení</h1>
             <div>
                 <ClassIdSettings {...props}/>
@@ -38,8 +38,8 @@ function SettingsPage(props: Props) {
             <div>
                 {groupsContent}
             </div>
-            <Button href="/" onClick={handleBack} variant="outline-secondary">
-                <i className="bi bi-arrow-left"></i> zpět
+            <Button href="/" onClick={handleSave} variant="outline-secondary">
+                <i className="bi bi-check-lg"></i> uložit
             </Button>
         </div>
     );

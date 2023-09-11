@@ -62,7 +62,7 @@ function App() {
     ]), [childrenProps]);
 
     return (
-        <div className="h-100 p-5">
+        <div className="h-100">
             <RouterProvider router={router}/>
         </div>
     );
