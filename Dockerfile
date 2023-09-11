@@ -4,6 +4,7 @@ COPY . /srv/app
 
 WORKDIR /srv/app
 
+RUN npm install -g vite
 RUN npm install
 
 CMD ["npm", "run", "dev"]
