@@ -57,6 +57,10 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
                 const room = $(dayItem).find(".top > .right > div").text();
                 const teacher = $(dayItem).find(".bottom > span").text();
 
+                if (subject.trim() === "") {
+                    continue;
+                }
+
                 lessons.push(new Lesson(subject, group, room, teacher));
             }
 
