@@ -12,7 +12,7 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <CookiesProvider>
+            <CookiesProvider defaultSetOptions={{expires: new Date("2100-01-01")}}>
                 <App/>
             </CookiesProvider>
         </QueryClientProvider>
