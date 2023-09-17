@@ -1,6 +1,7 @@
 import HourTime from "../models/HourTime.ts";
-import {DateTime} from "luxon";
+import {DateTime, Duration} from "luxon";
 import Hour from "../models/Hour.ts";
+import {useEffect} from "react";
 
 interface Props {
     currentTime: DateTime;
@@ -12,7 +13,7 @@ interface Props {
 }
 
 function TimeRemaining(props: Props) {
-    let hourIndex: number | null = null;
+     let hourIndex: number | null = null;
     for (let i = props.firstHourIndex; i <= props.lastHourIndex; i++) {
         if (props.currentTime > props.hourTimes[i].end) {
             continue;
@@ -21,29 +22,32 @@ function TimeRemaining(props: Props) {
         hourIndex = i;
         break;
     }
-    if (hourIndex === null) {
-        return (
-            <>Vyučování skončilo.</>
-        )
+
+    let timeRemaining: Duration | null = null;
+
+    if (hourIndex !== null) {
+        if (!props.hours[hourIndex].isSelected) {
+            hourIndex = hourIndex + props.hours.slice(hourIndex).findIndex((hour) => hour.isSelected);
+        }
+
+        const hourTime = props.hourTimes[hourIndex];
+        let awaitedTime: DateTime;
+        if (props.currentTime < hourTime.start) {
+            awaitedTime = hourTime.start;
+        } else {
+            awaitedTime = hourTime.end;
+        }
+
+        timeRemaining = awaitedTime.diff(props.currentTime);
     }
 
-    if (!props.hours[hourIndex].isSelected) {
-        hourIndex = hourIndex + props.hours.slice(hourIndex).findIndex((hour) => hour.isSelected);
-    }
-
-    const hourTime = props.hourTimes[hourIndex];
-    let awaitedTime: DateTime;
-    if (props.currentTime < hourTime.start) {
-        awaitedTime = hourTime.start;
-    } else {
-        awaitedTime = hourTime.end;
-    }
-
-    const timeRemaining = awaitedTime.diff(props.currentTime);
+    useEffect(() => {
+        document.title = timeRemaining === null ? "Rozvrh" : timeRemaining.toFormat("mm:ss");
+    }, [timeRemaining]);
 
     return (
         <>
-            {timeRemaining.toFormat("mm:ss")}
+            {timeRemaining === null ? "Vyučování skončilo." : timeRemaining.toFormat("mm:ss")}
         </>
     );
 }
