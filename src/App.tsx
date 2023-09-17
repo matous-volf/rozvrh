@@ -49,7 +49,7 @@ function App() {
             setSelectedClassIdCallback: handleSelectedClassIdChange,
             setSelectedGroupsCallback: handleSelectedGroupsChange
         };
-    }, [timetable, selectedClassId, selectedGroups, handleSelectedClassIdChange, handleSelectedGroupsChange]);
+    }, [isLoading, timetable, selectedClassId, selectedGroups, handleSelectedClassIdChange, handleSelectedGroupsChange]);
 
     const router = useMemo(() => createBrowserRouter([
         {
