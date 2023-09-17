@@ -27,7 +27,7 @@ function App() {
         }, [setCookies]
     );
 
-    const {data} = useQuery({
+    const {data, isLoading} = useQuery({
         queryKey: ["timetable", selectedClassId, selectedGroups],
         queryFn: () => {
             if (selectedClassId === null) {
@@ -42,6 +42,7 @@ function App() {
 
     const childrenProps = useMemo(() => {
         return {
+            isLoading: isLoading,
             timetable: timetable,
             selectedClassId: selectedClassId,
             selectedGroups: selectedGroups,

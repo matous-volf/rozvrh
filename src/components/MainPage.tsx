@@ -3,6 +3,7 @@ import TimetableInfo from "./TimetableInfo.tsx";
 import Timetable from "../models/Timetable.ts";
 
 interface Props {
+    isLoading: boolean;
     timetable: Timetable | null;
     selectedClassId: string | null;
     selectedGroups: string[];
@@ -12,7 +13,10 @@ interface Props {
 
 function MainPage(props: Props) {
     let content = null;
-    if (props.timetable === null) {
+    if (props.isLoading) {
+        content = <p>Načítání...</p>;
+    }
+    else if (props.timetable === null) {
         content = <p>Zvolte třídu a skupiny v nastavení.</p>;
     } else {
         content = <TimetableInfo {...props} timetable={props.timetable}/>;
