@@ -42,14 +42,14 @@ function App() {
 
     const childrenProps = useMemo(() => {
         return {
-            isLoading: isLoading,
+            isQueryLoading: isLoading,
             timetable: timetable,
             selectedClassId: selectedClassId,
             selectedGroups: selectedGroups,
             setSelectedClassIdCallback: handleSelectedClassIdChange,
             setSelectedGroupsCallback: handleSelectedGroupsChange
         };
-    }, [timetable, selectedClassId, selectedGroups, handleSelectedClassIdChange, handleSelectedGroupsChange]);
+    }, [isLoading, timetable, selectedClassId, selectedGroups, handleSelectedClassIdChange, handleSelectedGroupsChange]);
 
     const router = useMemo(() => createBrowserRouter([
         {
