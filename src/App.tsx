@@ -42,7 +42,7 @@ function App() {
 
     const childrenProps = useMemo(() => {
         return {
-            isLoading: isLoading,
+            isQueryLoading: isLoading,
             timetable: timetable,
             selectedClassId: selectedClassId,
             selectedGroups: selectedGroups,

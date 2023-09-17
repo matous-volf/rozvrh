@@ -3,7 +3,7 @@ import TimetableInfo from "./TimetableInfo.tsx";
 import Timetable from "../models/Timetable.ts";
 
 interface Props {
-    isLoading: boolean;
+    isQueryLoading: boolean;
     timetable: Timetable | null;
     selectedClassId: string | null;
     selectedGroups: string[];
@@ -13,7 +13,7 @@ interface Props {
 
 function MainPage(props: Props) {
     let content = null;
-    if (props.isLoading) {
+    if (props.isQueryLoading ) {
         content = <p>Načítání...</p>;
     }
     else if (props.timetable === null) {
