@@ -1,7 +1,7 @@
 # Rozvrh
 
 Zobrazuje nynější a následující předmět a čas zbývající do další hodiny na [Deltě](https://www.delta-skola.cz/).
-Inspirováno @czM1K3/[DeltaTime](https://github.com/czM1K3/DeltaTime).
+Inspirováno [@czM1K3](https://github.com/czM1K3)/[DeltaTime](https://github.com/czM1K3/DeltaTime).
 
 Aplikace je nasazena na [rozvrh.matousvolf.cz](https://rozvrh.matousvolf.cz/).
 
