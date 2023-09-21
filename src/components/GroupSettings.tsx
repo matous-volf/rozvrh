@@ -40,6 +40,7 @@ function GroupSettings(props: Props) {
     return (
         <>
             <h2>Skupiny</h2>
+            <p>Své skupiny najdete v rozvrhu aplikace Bakaláři.</p>
 
             {props.timetable.groups.sort().map((group) => (
                 <FormCheck name="groups" value={group} id={"input_groups_" + group} onChange={handleChange}
