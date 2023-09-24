@@ -15,10 +15,6 @@ interface Props {
 function SettingsPage(props: Props) {
     const [selectedGroups, setSelectedGroups] = useState<string[]>(props.selectedGroups);
 
-    const handleSelectedGroupsChange = (groups: string[]) => {
-        setSelectedGroups(groups);
-    }
-
     const handleSave = () => {
         props.setSelectedGroupsCallback(selectedGroups);
     }
@@ -26,7 +22,7 @@ function SettingsPage(props: Props) {
     let groupsContent = null;
     if (props.timetable !== null) {
         groupsContent = <GroupSettings {...props} timetable={props.timetable}
-                                       setSelectedGroupsCallback={handleSelectedGroupsChange}/>;
+                                       setSelectedGroupsCallback={setSelectedGroups}/>;
     }
 
     return (
