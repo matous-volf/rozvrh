@@ -20,12 +20,6 @@ function SettingsPage(props: Props) {
         props.setSelectedGroupsCallback(selectedGroups);
     }
 
-    let groupsContent = null;
-    if (props.timetable !== null) {
-        groupsContent = <GroupSettings {...props} timetable={props.timetable}
-                                       setSelectedGroupsCallback={setSelectedGroups}/>;
-    }
-
     document.title = "Nastavení";
 
     return (
@@ -35,7 +29,9 @@ function SettingsPage(props: Props) {
                 <ClassIdSettings {...props}/>
             </div>
             <div>
-                {groupsContent}
+                {props.timetable !== null &&
+                    <GroupSettings {...props} timetable={props.timetable}
+                                   setSelectedGroupsCallback={setSelectedGroups}/>}
             </div>
             <Link to="/">
                 <Button onClick={handleSave} variant="outline-secondary">
