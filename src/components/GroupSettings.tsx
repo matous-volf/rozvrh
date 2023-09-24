@@ -42,6 +42,8 @@ function GroupSettings(props: Props) {
             <h2>Skupiny</h2>
             <p>Své skupiny najdete v rozvrhu aplikace Bakaláři.</p>
 
+            {props.timetable.groups.length < 1 && <p>Nejsou k dispozici žádné skupiny.</p>}
+
             {props.timetable.groups.sort().map((group) => (
                 <FormCheck name="groups" value={group} id={"input_groups_" + group} onChange={handleChange}
                            checked={selectedGroups.includes(group)} label={group} key={nanoid()}>
