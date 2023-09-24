@@ -1,10 +1,10 @@
 import {useCallback, useMemo} from "react";
 import {useCookies} from "react-cookie";
-import MainPage from "./components/MainPage.tsx";
+import MainPage from "./MainPage.tsx";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import SettingsPage from "./components/SettingsPage.tsx";
+import SettingsPage from "./SettingsPage.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {getTimetable} from "./api/bakalariScraper.ts";
+import {getTimetable} from "../api/bakalariScraper.ts";
 
 function App() {
     const [cookies, setCookies] = useCookies(["selectedClassId", "selectedGroups"]);

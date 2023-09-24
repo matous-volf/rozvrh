@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import App from "./App.tsx"
+import App from "./components/App.tsx"
 import {CookiesProvider} from "react-cookie";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import ReactGA from "react-ga4";
