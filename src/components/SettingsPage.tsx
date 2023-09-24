@@ -3,6 +3,7 @@ import Timetable from "../models/Timetable.ts";
 import GroupSettings from "./GroupSettings.tsx";
 import {Button} from "react-bootstrap";
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 interface Props {
     timetable: Timetable | null;
@@ -34,9 +35,11 @@ function SettingsPage(props: Props) {
             <div>
                 {groupsContent}
             </div>
-            <Button href="/" onClick={handleSave} variant="outline-secondary">
-                <i className="bi bi-check-lg"></i> uložit
-            </Button>
+            <Link to="/">
+                <Button onClick={handleSave} variant="outline-secondary">
+                    <i className="bi bi-check-lg"></i> uložit
+                </Button>
+            </Link>
         </div>
     );
 }

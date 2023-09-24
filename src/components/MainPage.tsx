@@ -1,6 +1,7 @@
 import {Button} from "react-bootstrap";
 import TimetableInfo from "./TimetableInfo.tsx";
 import Timetable from "../models/Timetable.ts";
+import {Link} from "react-router-dom";
 
 interface Props {
     isQueryLoading: boolean;
@@ -27,9 +28,11 @@ function MainPage(props: Props) {
 
     return (
         <div className="h-100 d-flex flex-column justify-content-center align-items-center text-center p-5">
-            <Button variant="outline-secondary" href="/nastaveni">
-                <i className="bi bi-gear-fill"></i> nastavení
-            </Button>
+            <Link to="/nastaveni">
+                <Button variant="outline-secondary">
+                    <i className="bi bi-gear-fill"></i> nastavení
+                </Button>
+            </Link>
             <div className="flex-fill d-flex justify-content-center align-items-center">
                 {content}
             </div>
