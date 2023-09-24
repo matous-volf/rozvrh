@@ -26,6 +26,8 @@ function SettingsPage(props: Props) {
                                        setSelectedGroupsCallback={setSelectedGroups}/>;
     }
 
+    document.title = "Nastavení";
+
     return (
         <div className="container d-flex flex-column align-items-start gap-3 p-4" style={{maxWidth: "576px"}}>
             <h1>Nastavení</h1>
