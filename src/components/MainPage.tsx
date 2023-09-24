@@ -14,6 +14,8 @@ interface Props {
 }
 
 function MainPage(props: Props) {
+    document.title = "Rozvrh";
+
     return (
         <div className="h-100 d-flex flex-column justify-content-center align-items-center text-center p-5">
             <Link to="/nastaveni">
