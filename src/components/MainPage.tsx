@@ -36,7 +36,7 @@ function MainPage(props: Props) {
             <div className="flex-fill d-flex justify-content-center align-items-center">
                 {content}
             </div>
-            <Button variant="outline-secondary" href="https://github.com/matous-volf/rozvrh">
+            <Button variant="outline-secondary" href="https://github.com/matous-volf/rozvrh" target="_blank">
                 <i className="bi bi-github"></i> GitHub
             </Button>
         </div>
