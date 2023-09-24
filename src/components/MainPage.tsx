@@ -4,6 +4,7 @@ import Timetable from "../models/Timetable.ts";
 
 interface Props {
     isQueryLoading: boolean;
+    isQueryError: boolean;
     timetable: Timetable | null;
     selectedClassId: string | null;
     selectedGroups: string[];
@@ -15,6 +16,8 @@ function MainPage(props: Props) {
     let content = null;
     if (props.isQueryLoading ) {
         content = <p>Načítání...</p>;
+    } else if (props.isQueryError) {
+        content = <p>Rozvrh se nepodařilo načíst.</p>;
     }
     else if (props.timetable === null) {
         content = <p>Zvolte třídu a skupiny v nastavení.</p>;

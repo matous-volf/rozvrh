@@ -27,7 +27,7 @@ function App() {
         }, [setCookies]
     );
 
-    const {data, isLoading} = useQuery({
+    const timetableQuery = useQuery({
         queryKey: ["timetable", selectedClassId, selectedGroups],
         queryFn: () => {
             if (selectedClassId === null) {
@@ -38,18 +38,20 @@ function App() {
         }
     });
 
-    const timetable = data === undefined ? null : data;
+    const timetable = timetableQuery.data === undefined ? null : timetableQuery.data;
 
     const childrenProps = useMemo(() => {
         return {
-            isQueryLoading: isLoading,
+            isQueryLoading: timetableQuery.isLoading,
+            isQueryError: timetableQuery.isError,
             timetable: timetable,
             selectedClassId: selectedClassId,
             selectedGroups: selectedGroups,
             setSelectedClassIdCallback: handleSelectedClassIdChange,
             setSelectedGroupsCallback: handleSelectedGroupsChange
         };
-    }, [isLoading, timetable, selectedClassId, selectedGroups, handleSelectedClassIdChange, handleSelectedGroupsChange]);
+    }, [timetableQuery.isLoading, timetableQuery.isError, timetable, selectedClassId, selectedGroups,
+        handleSelectedClassIdChange, handleSelectedGroupsChange]);
 
     const router = useMemo(() => createBrowserRouter([
         {
