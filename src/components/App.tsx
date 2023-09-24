@@ -1,10 +1,10 @@
 import {useCallback, useMemo} from "react";
 import {useCookies} from "react-cookie";
-import MainPage from "./components/MainPage.tsx";
+import MainPage from "./MainPage.tsx";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import SettingsPage from "./components/SettingsPage.tsx";
+import SettingsPage from "./SettingsPage.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {getTimetable} from "./api/bakalariScraper.ts";
+import {getTimetable} from "../api/bakalariScraper.ts";
 
 function App() {
     const [cookies, setCookies] = useCookies(["selectedClassId", "selectedGroups"]);
@@ -27,7 +27,7 @@ function App() {
         }, [setCookies]
     );
 
-    const {data, isLoading} = useQuery({
+    const timetableQuery = useQuery({
         queryKey: ["timetable", selectedClassId, selectedGroups],
         queryFn: () => {
             if (selectedClassId === null) {
@@ -38,18 +38,20 @@ function App() {
         }
     });
 
-    const timetable = data === undefined ? null : data;
+    const timetable = timetableQuery.data === undefined ? null : timetableQuery.data;
 
     const childrenProps = useMemo(() => {
         return {
-            isQueryLoading: isLoading,
+            isQueryLoading: timetableQuery.isLoading,
+            isQueryError: timetableQuery.isError,
             timetable: timetable,
             selectedClassId: selectedClassId,
             selectedGroups: selectedGroups,
             setSelectedClassIdCallback: handleSelectedClassIdChange,
             setSelectedGroupsCallback: handleSelectedGroupsChange
         };
-    }, [isLoading, timetable, selectedClassId, selectedGroups, handleSelectedClassIdChange, handleSelectedGroupsChange]);
+    }, [timetableQuery.isLoading, timetableQuery.isError, timetable, selectedClassId, selectedGroups,
+        handleSelectedClassIdChange, handleSelectedGroupsChange]);
 
     const router = useMemo(() => createBrowserRouter([
         {
