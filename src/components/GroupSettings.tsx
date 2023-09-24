@@ -49,7 +49,6 @@ function GroupSettings(props: Props) {
                            checked={selectedGroups.includes(group)} label={group} key={nanoid()}>
                 </FormCheck>
             ))}
-
         </>
     );
 }
