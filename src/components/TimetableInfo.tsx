@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {DateTime} from "luxon";
 import Timetable from "../models/Timetable.ts";
 import TimeRemaining from "./TimeRemaining.tsx";
-import hourTimes from "../data/hourTimes.ts";
 import Lessons from "./Lessons.tsx";
 
 interface Props {
@@ -49,12 +48,13 @@ function TimetableInfo(props: Props) {
     return (
         <div className="d-flex flex-column gap-4">
             <p className="display-1 fw-bold">
-                <TimeRemaining currentTime={currentTime} hourTimes={hourTimes} hours={hours}
+                <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
                                firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}
                                selectedGroups={props.selectedGroups}/>
             </p>
-            <Lessons currentTime={currentTime} hourTimes={hourTimes} hours={hours} firstHourIndex={firstHourIndex}
-                     lastHourIndex={lastHourIndex} selectedGroups={props.selectedGroups}/>
+            <Lessons currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
+                     firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}
+                     selectedGroups={props.selectedGroups}/>
         </div>
     );
 }

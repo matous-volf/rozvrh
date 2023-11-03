@@ -1,25 +1,15 @@
 import Day from "./Day.ts";
+import HourTime from "./HourTime.ts";
 
 class Timetable {
     days: Day[];
     groups: string[];
+    hourTimes: HourTime[];
 
-    constructor(days: Day[]) {
+    constructor(days: Day[], groups: string[], hourTimes: HourTime[]) {
         this.days = days;
-
-        const groups: string[] = [];
-        for (const day of days) {
-            for (const hour of day.hours) {
-                for (const lesson of hour.lessons) {
-                    if (lesson.group === null || lesson.group.trim() === "" || groups.includes(lesson.group)) {
-                        continue;
-                    }
-
-                    groups.push(lesson.group);
-                }
-            }
-        }
         this.groups = groups;
+        this.hourTimes = hourTimes;
     }
 }
 

@@ -4,9 +4,13 @@ import Hour from "../models/Hour.ts";
 import Lesson from "../models/Lesson.ts";
 import Timetable from "../models/Timetable.ts";
 import ClassId from "../models/ClassId.ts";
+import HourTime from "../models/HourTime.ts";
+import {DateTime} from "luxon";
 
-const timetableBlankBaseUrl = "https://delta-skola.bakalari.cz/Timetable/Public";
-const timetableClassBaseUrl = "https://delta-skola.bakalari.cz/Timetable/Public/Actual/Class/";
+const timetableBlankPermanentUrl = "https://delta-skola.bakalari.cz/Timetable/Public";
+
+const timetableClassPermanentBaseUrl = "https://delta-skola.bakalari.cz/Timetable/Public/Permanent/Class/";
+const timetableClassCurrentBaseUrl = "https://delta-skola.bakalari.cz/Timetable/Public/Actual/Class/";
 
 async function fetchHtml(url: string) {
     const response = await fetch(url);
@@ -17,7 +21,7 @@ async function fetchHtml(url: string) {
 }
 
 export async function getClassIds(): Promise<ClassId[]> {
-    const html = await fetchHtml(timetableBlankBaseUrl);
+    const html = await fetchHtml(timetableBlankPermanentUrl);
     const $ = cheerio.load(html);
 
     const classIds: ClassId[] = [];
@@ -37,8 +41,34 @@ export async function getClassIds(): Promise<ClassId[]> {
 }
 
 export async function getTimetable(classId: string, selectedGroups: string[]): Promise<Timetable> {
-    const url = timetableClassBaseUrl + classId;
-    const html = await fetchHtml(url);
+    const permanentUrl = timetableClassPermanentBaseUrl + classId;
+    const currentUrl = timetableClassCurrentBaseUrl + classId;
+
+    const permanentHtml = await fetchHtml(permanentUrl);
+    const currentHtml = await fetchHtml(currentUrl);
+
+    const daysPermanent = createDays(permanentHtml, selectedGroups);
+    const daysCurrent = createDays(currentHtml, selectedGroups);
+
+    const groups: string[] = [];
+    for (const day of daysPermanent) {
+        for (const hour of day.hours) {
+            for (const lesson of hour.lessons) {
+                if (lesson.group === null || lesson.group.trim() === "" || groups.includes(lesson.group)) {
+                    continue;
+                }
+
+                groups.push(lesson.group);
+            }
+        }
+    }
+
+    const hourTimes = createHourTimes(currentHtml);
+
+    return new Timetable(daysCurrent, groups, hourTimes);
+}
+
+function createDays(html: string, selectedGroups: string[]): Day[] {
     const $ = cheerio.load(html);
 
     const days: Day[] = [];
@@ -73,6 +103,21 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
         days.push(new Day(hours));
     }
 
-    return new Timetable(days);
+    return days;
 }
 
+function createHourTimes(html: string): HourTime[] {
+    const $ = cheerio.load(html);
+
+    const hourTimes = [];
+
+    const hours = $(".bk-timetable-hours > .bk-hour-wrapper > .hour");
+    for (const hour of hours) {
+        const from = $(hour).children().first().text();
+        const to = $(hour).children().last().text();
+
+        hourTimes.push(new HourTime(DateTime.fromFormat(from, "H:mm"), DateTime.fromFormat(to, "H:mm")));
+    }
+
+    return hourTimes;
+}
