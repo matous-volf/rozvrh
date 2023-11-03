@@ -2,6 +2,8 @@ import {Button} from "react-bootstrap";
 import TimetableInfo from "./TimetableInfo.tsx";
 import Timetable from "../models/Timetable.ts";
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
+import NoSleep from 'nosleep.js';
 
 interface Props {
     isQueryLoading: boolean;
@@ -15,6 +17,14 @@ interface Props {
 
 function MainPage(props: Props) {
     document.title = "Rozvrh";
+
+    useEffect(() => {
+        const noSleep = new NoSleep();
+        document.addEventListener('click', function enableNoSleep() {
+            document.removeEventListener('click', enableNoSleep, false);
+            void noSleep.enable();
+        }, false);
+    }, []);
 
     return (
         <div className="h-100 d-flex flex-column justify-content-center align-items-center text-center p-5">
