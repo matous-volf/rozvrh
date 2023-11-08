@@ -59,7 +59,7 @@ function GroupSettings(props: Props) {
                 {group.sort().map((group_) => (
                     <Form.Check
                         inline
-                        label={`${group_}`}
+                        label={`${group_.includes("VOLNO-") ? "VOLNO" : group_}`}
                         name={`${group}`}
                         type={'radio'}
                         id={"input_groups_" + group_}
