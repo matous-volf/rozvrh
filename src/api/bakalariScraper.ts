@@ -50,15 +50,24 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
     const daysPermanent = createDays(permanentHtml, selectedGroups);
     const daysCurrent = createDays(currentHtml, selectedGroups);
 
-    const groups: string[] = [];
+    const groups: string[][] = [];
     for (const day of daysPermanent) {
+        hoursLoop:
         for (const hour of day.hours) {
+            const groupsGroup: string[] = [];
             for (const lesson of hour.lessons) {
-                if (lesson.group === null || lesson.group.trim() === "" || groups.includes(lesson.group)) {
-                    continue;
+                if (lesson.group === null || lesson.group.trim() === "" || groups.some(row => row.includes(lesson.group))) {
+                    continue hoursLoop;
                 }
 
-                groups.push(lesson.group);
+                groupsGroup.push(lesson.group);
+            }
+            
+            if (groupsGroup.length > 0) {
+                if (groupsGroup.length == 1) {
+                    groupsGroup.push("VOLNO");
+                }
+                groups.push(groupsGroup);
             }
         }
     }
