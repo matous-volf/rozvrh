@@ -53,7 +53,7 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
     const groups: string[][] = [];
     for (const day of daysPermanent) {
         hoursLoop:
-        for (const hour of day.hours) {
+        for (const hour of day.hours.sort((a,b) => b.lessons.length - a.lessons.length)) {
             const groupsGroup: string[] = [];
             for (const lesson of hour.lessons) {
                 if (lesson.group === null || lesson.group.trim() === "" || groups.some(row => row.includes(lesson.group))) {
