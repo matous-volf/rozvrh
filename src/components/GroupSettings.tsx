@@ -1,7 +1,7 @@
 import {ChangeEvent, useEffect, useState} from "react";
 import {nanoid} from "nanoid";
 import Timetable from "../models/Timetable.ts";
-import {Form} from "react-bootstrap";
+import {FormCheck} from "react-bootstrap";
 
 interface Props {
     timetable: Timetable;
@@ -57,21 +57,21 @@ function GroupSettings(props: Props) {
 
             {props.timetable.groups.length < 1 && <p>Nejsou k dispozici žádné skupiny.</p>}
 
-            {props.timetable.groups.sort().map((group) => (
-                <div key={`inline-radio-${group}`}>
-                {group.sort().map((group_) => (
-                    <Form.Check
-                        inline
-                        label={`${group_.includes("VOLNO-") ? "VOLNO" : group_}`}
-                        name={`${group}`}
-                        type={'radio'}
-                        id={"input_groups_" + group_}
-                        onChange={handleChange}
-                        key={nanoid()}
-                        data-detail={`${group_}`}
-                        checked={selectedGroups.includes(group_)}
-                    />
-                ))}
+            {props.timetable.groups.sort().map((groupsGroup) => (
+                <div key={nanoid()}>
+                    {groupsGroup.sort().map((group) => (
+                        <FormCheck
+                            inline={true}
+                            label={`${group.includes("VOLNO-") ? "volno" : group}`}
+                            name={groupsGroup.toString()}
+                            type={"radio"}
+                            id={"input-groups-" + group}
+                            onChange={handleChange}
+                            key={nanoid()}
+                            data-detail={group}
+                            checked={selectedGroups.includes(group)}
+                        />
+                    ))}
                 </div>
             ))}
         </>
