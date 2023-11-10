@@ -13,29 +13,32 @@ function GroupSettings(props: Props) {
     const [selectedGroups, setSelectedGroups] = useState<string[]>(props.selectedGroups);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const group = e.target.dataset.detail!;
+        const selectedGroup = e.target.dataset.detail!;
 
         setSelectedGroups((prevSelectedGroups) => {
             // The filter is basically an intersection of the two arrays. This cleans up any previously selected groups
             // that are no longer available.
-            const arr = [];
-            for (const row of props.timetable.groups) for (const e of row) arr.push(e);
-            const newSelectedGroups = arr.filter((group) => prevSelectedGroups.includes(group));
+            const groupsArray: string[] = [];
+            for (const row of props.timetable.groups) for (const e of row) groupsArray.push(e);
+            const newSelectedGroups = groupsArray.filter((group) => prevSelectedGroups.includes(group));
 
-            if (!newSelectedGroups.includes(group)) {
-                for (const group_ of props.timetable.groups) {
-                    if (!group_.includes(group)) {
+            if (!newSelectedGroups.includes(selectedGroup)) {
+                for (const groupsGroup of props.timetable.groups) {
+                    if (!groupsGroup.includes(selectedGroup)) {
                         continue;
                     }
-                    for (const group__ of group_) {
-                        const index = newSelectedGroups.indexOf(group__);
-                        if (index != -1) {
-                            newSelectedGroups.splice(index, 1);
+
+                    for (const group of groupsGroup) {
+                        const index = newSelectedGroups.indexOf(group);
+                        if (index === -1) {
+                            continue;
                         }
+
+                        newSelectedGroups.splice(index, 1);
                     }
                 }
 
-                newSelectedGroups.push(group);
+                newSelectedGroups.push(selectedGroup);
             }
 
             return newSelectedGroups;
