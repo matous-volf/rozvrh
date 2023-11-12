@@ -64,6 +64,20 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
             }
             
             if (groupsGroup.length > 0) {
+                
+                for (const [index, group] of groups.entries()) {
+                    const groupName = group[0].slice(0, 2);
+                    if (
+                        !group.every((y) => groupName === y.slice(0, 2) && !isNaN(parseInt(y.slice(-1)))) ||
+                        !groupsGroup.every((y) => groupName === y.slice(0, 2) && !isNaN(parseInt(y.slice(-1))))
+                    ) {
+                        continue;
+                    }
+                
+                    groups[index].push(...groupsGroup);
+                    continue hoursLoop;
+                }
+                
                 if (groupsGroup.length == 1) {
                     groupsGroup.push(`VOLNO-${groupsGroup[0]}`);
                 }
@@ -71,7 +85,7 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
             }
         }
     }
-
+    
     const hourTimes = createHourTimes(currentHtml);
 
     return new Timetable(daysCurrent, groups, hourTimes);
