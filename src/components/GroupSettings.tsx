@@ -58,7 +58,7 @@ function GroupSettings(props: Props) {
             {props.timetable.groups.length < 1 && <p>Nejsou k dispozici žádné skupiny.</p>}
 
             {props.timetable.groups.sort().map((groupsGroup) => (
-                <div key={nanoid()}>
+                <div className="mb-4" key={nanoid()}>
                     {groupsGroup.sort().map((group) => (
                         <FormCheck
                             inline={true}
