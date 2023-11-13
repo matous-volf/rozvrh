@@ -56,8 +56,12 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
         for (const hour of day.hours.sort((a,b) => b.lessons.length - a.lessons.length)) {
             const groupsGroup: string[] = [];
             for (const lesson of hour.lessons) {
-                if (lesson.group === null || lesson.group.trim() === "" || groups.some(row => row.includes(lesson.group))) {
+                if (lesson.group === null || lesson.group.trim() === "") {
                     continue hoursLoop;
+                }
+
+                if (groups.some(row => row.includes(lesson.group))) {
+                    continue;
                 }
 
                 groupsGroup.push(lesson.group);
@@ -85,7 +89,7 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
             }
         }
     }
-    
+
     const hourTimes = createHourTimes(currentHtml);
 
     return new Timetable(daysCurrent, groups, hourTimes);
