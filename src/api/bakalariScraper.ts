@@ -68,9 +68,7 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
             }
             
             if (groupsGroup.length > 0) {
-                if (groupsGroup.length == 1) {
-                    groupsGroup.push(`VOLNO-${groupsGroup[0]}`);
-                }
+                groupsGroup.push(`VOLNO-${groupsGroup}`);
                 groups.push(groupsGroup);
             }
         }
