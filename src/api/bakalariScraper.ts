@@ -51,26 +51,28 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
     const daysCurrent = createDays(currentHtml, selectedGroups);
 
     const groups: string[][] = [];
-    for (const day of daysPermanent) {
-        hoursLoop:
-        for (const hour of day.hours.sort((a,b) => b.lessons.length - a.lessons.length)) {
-            const groupsGroup: string[] = [];
-            for (const lesson of hour.lessons) {
-                if (lesson.group === null || lesson.group.trim() === "") {
-                    continue hoursLoop;
-                }
 
-                if (groups.some(row => row.includes(lesson.group))) {
-                    continue;
-                }
+    const hours = [];
+    for (const day of daysPermanent) for (const hour of day.hours) hours.push(hour);
 
-                groupsGroup.push(lesson.group);
+    hoursLoop:
+    for (const hour of hours.sort((a,b) => b.lessons.length - a.lessons.length)) {
+        const groupsGroup: string[] = [];
+        for (const lesson of hour.lessons) {
+            if (lesson.group === null || lesson.group.trim() === "") {
+                continue hoursLoop;
             }
-            
-            if (groupsGroup.length > 0) {
-                groupsGroup.push(`blank-${groupsGroup}`);
-                groups.push(groupsGroup);
+
+            if (groups.some(row => row.includes(lesson.group!))) {
+                continue;
             }
+
+            groupsGroup.push(lesson.group);
+        }
+        
+        if (groupsGroup.length > 0) {
+            groupsGroup.push(`blank-${groupsGroup}`);
+            groups.push(groupsGroup);
         }
     }
 
