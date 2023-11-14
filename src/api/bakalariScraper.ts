@@ -64,14 +64,11 @@ export async function getTimetable(classId: string, selectedGroupIds: string[]):
         const lessonsWithoutColon: Lesson[] = [];
 
         for (const lesson of hour.lessons) {
-            // TODO lesson příznak sudý/lichý hodin
-            if (lesson.subject.includes(": ")) {
-                const beforeColon: string = lesson.subject.split(": ")[0];
-
-                if (!lessonsMap[beforeColon]) {
-                    lessonsMap[beforeColon] = [lesson];
+            if (lesson.isNotEveryWeek) {
+                if (!lessonsMap[lesson.weekId!]) {
+                    lessonsMap[lesson.weekId!] = [lesson];
                 } else {
-                    lessonsMap[beforeColon].push(lesson);
+                    lessonsMap[lesson.weekId!].push(lesson);
                 }
             } else {
                 lessonsWithoutColon.push(lesson);
@@ -137,7 +134,14 @@ function createDays(html: string, selectedGroupIds: string[]): Day[] {
                 const room = $(dayItem).find(".top > .right > div").text().trim();
                 const teacher = $(dayItem).find(".bottom > span").text().trim();
 
-                lessons.push(new Lesson(subject, group.name !== "" ? group : null, room, teacher));
+                let isNotEveryWeek = false;
+                let weekId = null;
+                if (subject.includes(": ")) {
+                    isNotEveryWeek = true;
+                    weekId = subject.split(": ")[0];
+                }
+
+                lessons.push(new Lesson(subject, group.name !== "" ? group : null, room, teacher, isNotEveryWeek, weekId));
             }
 
             const selectedLesson = lessons.find((lesson) =>
