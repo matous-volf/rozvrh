@@ -1,12 +1,14 @@
+import Group from "./Group.ts";
+
 class Lesson {
     subject: string;
-    group: string | null;
+    group: Group | null;
     room: string;
     teacher: string;
 
-    constructor(subject: string, group: string | null, room: string, teacher: string) {
+    constructor(subject: string, group: Group | null, room: string, teacher: string) {
         this.subject = subject;
-        this.group = group === "" ? null : group;
+        this.group = group;
         this.room = room;
         this.teacher = teacher;
     }

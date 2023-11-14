@@ -8,16 +8,16 @@ import {Link} from "react-router-dom";
 interface Props {
     timetable: Timetable | null;
     selectedClassId: string | null;
-    selectedGroups: string[];
+    selectedGroupIds: string[];
     setSelectedClassIdCallback: (classId: string | null) => void;
-    setSelectedGroupsCallback: (groups: string[]) => void;
+    setSelectedGroupIdsCallback: (groupIds: string[]) => void;
 }
 
 function SettingsPage(props: Props) {
-    const [selectedGroups, setSelectedGroups] = useState<string[]>(props.selectedGroups);
+    const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>(props.selectedGroupIds);
 
     const handleSave = () => {
-        props.setSelectedGroupsCallback(selectedGroups);
+        props.setSelectedGroupIdsCallback(selectedGroupIds);
     }
 
     document.title = "Nastavení";
@@ -31,7 +31,7 @@ function SettingsPage(props: Props) {
             <div>
                 {props.timetable !== null &&
                     <GroupSettings {...props} timetable={props.timetable}
-                                   setSelectedGroupsCallback={setSelectedGroups}/>}
+                                   setSelectedGroupIdsCallback={setSelectedGroupIds}/>}
             </div>
             <Link to="/">
                 <Button onClick={handleSave} variant="outline-secondary">

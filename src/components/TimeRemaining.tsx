@@ -9,7 +9,7 @@ interface Props {
     hours: Hour[];
     firstHourIndex: number;
     lastHourIndex: number;
-    selectedGroups: string[];
+    selectedGroupIds: string[];
 }
 
 function TimeRemaining(props: Props) {

@@ -7,10 +7,10 @@ import {useQuery} from "@tanstack/react-query";
 import {getTimetable} from "../api/bakalariScraper.ts";
 
 function App() {
-    const [cookies, setCookies] = useCookies(["selectedClassId", "selectedGroups"]);
-    const selectedGroups: string[] = cookies.selectedGroups;
-    if (selectedGroups === undefined) {
-        setCookies("selectedGroups", []);
+    const [cookies, setCookies] = useCookies(["selectedClassId", "selectedGroupIds"]);
+    const selectedGroupIds: string[] = cookies.selectedGroupIds;
+    if (selectedGroupIds === undefined) {
+        setCookies("selectedGroupIds", []);
     }
     const selectedClassId: string = cookies.selectedClassId;
     if (selectedClassId === undefined) {
@@ -22,19 +22,19 @@ function App() {
         }, [setCookies]
     );
 
-    const handleSelectedGroupsChange = useCallback((groups: string[]) => {
-            setCookies("selectedGroups", groups);
+    const handleSelectedGroupIdsChange = useCallback((groupIds: string[]) => {
+            setCookies("selectedGroupIds", groupIds);
         }, [setCookies]
     );
 
     const timetableQuery = useQuery({
-        queryKey: ["timetable", selectedClassId, selectedGroups],
+        queryKey: ["timetable", selectedClassId, selectedGroupIds],
         queryFn: () => {
             if (selectedClassId === null) {
                 return null;
             }
 
-            return getTimetable(selectedClassId, selectedGroups)
+            return getTimetable(selectedClassId, selectedGroupIds)
         }
     });
 
@@ -46,12 +46,12 @@ function App() {
             isQueryError: timetableQuery.isError,
             timetable: timetable,
             selectedClassId: selectedClassId,
-            selectedGroups: selectedGroups,
+            selectedGroupIds: selectedGroupIds,
             setSelectedClassIdCallback: handleSelectedClassIdChange,
-            setSelectedGroupsCallback: handleSelectedGroupsChange
+            setSelectedGroupIdsCallback: handleSelectedGroupIdsChange
         };
-    }, [timetableQuery.isLoading, timetableQuery.isError, timetable, selectedClassId, selectedGroups,
-        handleSelectedClassIdChange, handleSelectedGroupsChange]);
+    }, [timetableQuery.isLoading, timetableQuery.isError, timetable, selectedClassId, selectedGroupIds,
+        handleSelectedClassIdChange, handleSelectedGroupIdsChange]);
 
     const router = useMemo(() => createBrowserRouter([
         {
