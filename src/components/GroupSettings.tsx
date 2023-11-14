@@ -59,7 +59,7 @@ function GroupSettings(props: Props) {
 
             {props.timetable.groups.sort().map((groupsGroup) => (
                 <div className="mb-4" key={nanoid()}>
-                    {groupsGroup.sort().sort((a, b) => a.includes("blank-") ? 1 : b.includes("blank-") ? -1 : 0 ) .map((group) => (
+                    {groupsGroup.sort().sort((a, b) => a.includes("blank-") ? 1 : b.includes("blank-") ? -1 : 0 ).map((group) => (
                         <FormCheck
                             inline={true}
                             label={`${group.includes("blank-") ? "volno" : group}`}

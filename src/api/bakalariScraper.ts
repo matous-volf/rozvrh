@@ -52,11 +52,46 @@ export async function getTimetable(classId: string, selectedGroups: string[]): P
 
     const groups: string[][] = [];
 
-    const hours = [];
+    const hours: Hour[] = [];
     for (const day of daysPermanent) for (const hour of day.hours) hours.push(hour);
 
+    const hours2: Hour[] = [];
+
+    for (const hour of hours) {
+        const hoursMap: { [key: string]: Hour } = {};
+
+        const hoursWithoutColon: Hour = new Hour([], null);
+
+        for (const lesson of hour.lessons) {
+            if (lesson.subject.includes(": ")) {
+                const beforeColon: string = lesson.subject.split(": ")[0];
+
+                if (!hoursMap[beforeColon]) {
+                    hoursMap[beforeColon] = new Hour([lesson], null);
+                } else {
+                    hoursMap[beforeColon].lessons.push(lesson);
+                }
+            } else {
+                hoursWithoutColon.lessons.push(lesson);
+            }
+        }
+
+        hours2.push(...Object.values(hoursMap));
+        if (hoursWithoutColon.lessons.length > 0) {
+            hours2.push(hoursWithoutColon);
+        }
+    }
+
     hoursLoop:
-    for (const hour of hours.sort((a,b) => b.lessons.length - a.lessons.length)) {
+    for (const hour of hours2
+        .sort((a, b) => b.lessons.length - a.lessons.length)
+        .sort((a, b) =>
+            a.lessons.some((lesson) => lesson.subject.includes(": "))
+                ? 1
+                : b.lessons.some((lesson) => lesson.subject.includes(": "))
+                ? -1
+                : 0,
+    )) {
         const groupsGroup: string[] = [];
         for (const lesson of hour.lessons) {
             if (lesson.group === null || lesson.group.trim() === "") {
@@ -110,7 +145,7 @@ function createDays(html: string, selectedGroups: string[]): Day[] {
             const selectedLesson = lessons.find((lesson) =>
                 lesson.group === null || selectedGroups.includes(lesson.group));
 
-            hours.push(new Hour(lessons, selectedLesson !== undefined ? selectedLesson : null));
+                        hours.push(new Hour(lessons, selectedLesson !== undefined ? selectedLesson : null));
         }
 
         days.push(new Day(hours));
