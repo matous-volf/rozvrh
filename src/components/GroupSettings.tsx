@@ -5,50 +5,83 @@ import {FormCheck} from "react-bootstrap";
 
 interface Props {
     timetable: Timetable;
-    selectedGroups: string[];
-    setSelectedGroupsCallback: (groups: string[]) => void;
+    selectedGroupIds: string[];
+    setSelectedGroupIdsCallback: (groupIds: string[]) => void;
 }
 
 function GroupSettings(props: Props) {
-    const [selectedGroups, setSelectedGroups] = useState<string[]>(props.selectedGroups);
+    const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>(props.selectedGroupIds);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const group = e.target.value;
+        const selectedGroupId = e.target.dataset.groupId!;
 
-        setSelectedGroups((prevSelectedGroups) => {
-            // The filter is basically an intersection of the two arrays. This cleans up any previously selected groups
-            // that are no longer available.
-            const newSelectedGroups = props.timetable.groups.filter((group) => prevSelectedGroups.includes(group));
-
-            if (e.target.checked && !newSelectedGroups.includes(group)) {
-                newSelectedGroups.push(group);
-            }
-            if (!e.target.checked && newSelectedGroups.includes(group)) {
-                const index = newSelectedGroups.indexOf(group);
-                newSelectedGroups.splice(index, 1);
+        setSelectedGroupIds((prevSelectedGroupIds) => {
+            // This cleans up any previously selected groups that are no longer available.
+            const newSelectedGroupIds: string[] = [];
+            for (const groupGroup of props.timetable.groupGroups) {
+                for (const group of groupGroup) {
+                    if (prevSelectedGroupIds.includes(group.id)) {
+                        newSelectedGroupIds.push(group.id);
+                    }
+                }
             }
 
-            return newSelectedGroups;
+            if (!newSelectedGroupIds.includes(selectedGroupId)) {
+                for (const groupGroup of props.timetable.groupGroups) {
+                    if (!groupGroup.some((group) => group.id == selectedGroupId)) {
+                        continue;
+                    }
+
+                    for (const group of groupGroup) {
+                        const index = newSelectedGroupIds.indexOf(group.id);
+                        if (index === -1) {
+                            continue;
+                        }
+
+                        newSelectedGroupIds.splice(index, 1);
+                    }
+                }
+
+                newSelectedGroupIds.push(selectedGroupId);
+            }
+
+            return newSelectedGroupIds;
         });
     };
 
-    const setSelectedGroupsCallback = props.setSelectedGroupsCallback;
+    const setSelectedGroupIdsCallback = props.setSelectedGroupIdsCallback;
     useEffect(() => {
-        setSelectedGroupsCallback(selectedGroups);
-    }, [setSelectedGroupsCallback, selectedGroups]);
+        setSelectedGroupIdsCallback(selectedGroupIds);
+    }, [setSelectedGroupIdsCallback, selectedGroupIds]);
 
     return (
         <>
             <h2>Skupiny</h2>
             <p>Své skupiny najdete v rozvrhu aplikace Bakaláři.</p>
 
-            {props.timetable.groups.length < 1 && <p>Nejsou k dispozici žádné skupiny.</p>}
+            {props.timetable.groupGroups.length < 1 && <p>Nejsou k dispozici žádné skupiny.</p>}
 
-            {props.timetable.groups.sort().map((group) => (
-                <FormCheck name="groups" value={group} id={"input_groups_" + group} onChange={handleChange}
-                           checked={selectedGroups.includes(group)} label={group} key={nanoid()}>
-                </FormCheck>
-            ))}
+            <div className="d-flex flex-column gap-2">
+                {props.timetable.groupGroups.sort().map((groupGroup) => (
+                    <div key={nanoid()}>
+                        {groupGroup
+                            .sort((a, b) => a.isBlank ? 1 : b.isBlank ? -1 : a.id.localeCompare(b.id))
+                            .map((group) => (
+                                <FormCheck
+                                    inline={true}
+                                    label={`${group.isBlank ? "volno" : group.name}`}
+                                    name={groupGroup.map((group => group.id)).toString()}
+                                    type={"radio"}
+                                    id={"input-group-" + group.id}
+                                    onChange={handleChange}
+                                    key={nanoid()}
+                                    data-group-id={group.id}
+                                    checked={selectedGroupIds.includes(group.id)}
+                                />
+                            ))}
+                    </div>
+                ))}
+            </div>
         </>
     );
 }

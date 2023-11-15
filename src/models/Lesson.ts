@@ -1,14 +1,20 @@
+import Group from "./Group.ts";
+
 class Lesson {
     subject: string;
-    group: string | null;
+    group: Group | null;
     room: string;
     teacher: string;
+    isNotEveryWeek: boolean;
+    weekId: string | null;
 
-    constructor(subject: string, group: string | null, room: string, teacher: string) {
+    constructor(subject: string, group: Group | null, room: string, teacher: string, isNotEveryWeek: boolean, weekId: string | null) {
         this.subject = subject;
-        this.group = group === "" ? null : group;
+        this.group = group;
         this.room = room;
         this.teacher = teacher;
+        this.isNotEveryWeek = isNotEveryWeek;
+        this.weekId = weekId;
     }
 }
 

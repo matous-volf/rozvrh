@@ -6,6 +6,7 @@ import Timetable from "../models/Timetable.ts";
 import ClassId from "../models/ClassId.ts";
 import HourTime from "../models/HourTime.ts";
 import {DateTime} from "luxon";
+import Group from "../models/Group.ts";
 
 const timetableBlankPermanentUrl = "https://delta-skola.bakalari.cz/Timetable/Public";
 
@@ -40,35 +41,75 @@ export async function getClassIds(): Promise<ClassId[]> {
     return classIds;
 }
 
-export async function getTimetable(classId: string, selectedGroups: string[]): Promise<Timetable> {
+export async function getTimetable(classId: string, selectedGroupIds: string[]): Promise<Timetable> {
     const permanentUrl = timetableClassPermanentBaseUrl + classId;
     const currentUrl = timetableClassCurrentBaseUrl + classId;
 
     const permanentHtml = await fetchHtml(permanentUrl);
     const currentHtml = await fetchHtml(currentUrl);
 
-    const daysPermanent = createDays(permanentHtml, selectedGroups);
-    const daysCurrent = createDays(currentHtml, selectedGroups);
+    const daysPermanent = createDays(permanentHtml, selectedGroupIds);
+    const daysCurrent = createDays(currentHtml, selectedGroupIds);
 
-    const groups: string[] = [];
-    for (const day of daysPermanent) {
-        for (const hour of day.hours) {
-            for (const lesson of hour.lessons) {
-                if (lesson.group === null || lesson.group.trim() === "" || groups.includes(lesson.group)) {
-                    continue;
+    const groupGroups: Group[][] = [];
+
+    const hours: Hour[] = [];
+    for (const day of daysPermanent) for (const hour of day.hours) hours.push(hour);
+
+    const lessonGroups: Lesson[][] = [];
+
+    for (const hour of hours) {
+        const lessonsMap: { [key: string]: Lesson[] } = {};
+
+        const lessonsWithoutColon: Lesson[] = [];
+
+        for (const lesson of hour.lessons) {
+            if (lesson.isNotEveryWeek) {
+                if (!lessonsMap[lesson.weekId!]) {
+                    lessonsMap[lesson.weekId!] = [lesson];
+                } else {
+                    lessonsMap[lesson.weekId!].push(lesson);
                 }
-
-                groups.push(lesson.group);
+            } else {
+                lessonsWithoutColon.push(lesson);
             }
+        }
+
+        lessonGroups.push(...Object.values(lessonsMap));
+        if (lessonsWithoutColon.length > 0) {
+            lessonGroups.push(lessonsWithoutColon);
         }
     }
 
+    hoursLoop:
+        for (const lessonGroup of lessonGroups
+            .sort((a, b) => b.length - a.length)
+            ) {
+            const groupGroup: Group[] = [];
+            for (const lesson of lessonGroup) {
+                if (lesson.group === null) {
+                    continue hoursLoop;
+                }
+
+                if (groupGroups.some(groupGroup => groupGroup.some((group) => group.id === lesson.group!.id))) {
+                    continue;
+                }
+
+                groupGroup.push(lesson.group);
+            }
+
+            if (groupGroup.length > 0) {
+                groupGroup.push(new Group(`blank-${groupGroup.map((group) => group.id)}`, null, true));
+                groupGroups.push(groupGroup);
+            }
+        }
+
     const hourTimes = createHourTimes(currentHtml);
 
-    return new Timetable(daysCurrent, groups, hourTimes);
+    return new Timetable(daysCurrent, groupGroups, hourTimes);
 }
 
-function createDays(html: string, selectedGroups: string[]): Day[] {
+function createDays(html: string, selectedGroupIds: string[]): Day[] {
     const $ = cheerio.load(html);
 
     const days: Day[] = [];
@@ -82,20 +123,29 @@ function createDays(html: string, selectedGroups: string[]): Day[] {
 
             const dayItems = $(cell).find(".day-item > .day-item-hover > .day-flex");
             for (const dayItem of dayItems) {
-                const subject = $(dayItem).find(".middle").text();
-                const group = $(dayItem).find(".top > .left > div").text();
-                const room = $(dayItem).find(".top > .right > div").text();
-                const teacher = $(dayItem).find(".bottom > span").text();
+                const subject = $(dayItem).find(".middle").text().trim();
 
-                if (subject.trim() === "") {
+                if (subject === "") {
                     continue;
                 }
 
-                lessons.push(new Lesson(subject, group, room, teacher));
+                const groupName = $(dayItem).find(".top > .left > div").text().trim();
+                const group = new Group(groupName, groupName, false);
+                const room = $(dayItem).find(".top > .right > div").text().trim();
+                const teacher = $(dayItem).find(".bottom > span").text().trim();
+
+                let isNotEveryWeek = false;
+                let weekId = null;
+                if (subject.includes(": ")) {
+                    isNotEveryWeek = true;
+                    weekId = subject.split(": ")[0];
+                }
+
+                lessons.push(new Lesson(subject, group.name !== "" ? group : null, room, teacher, isNotEveryWeek, weekId));
             }
 
             const selectedLesson = lessons.find((lesson) =>
-                lesson.group === null || selectedGroups.includes(lesson.group));
+                lesson.group === null || selectedGroupIds.includes(lesson.group.id));
 
             hours.push(new Hour(lessons, selectedLesson !== undefined ? selectedLesson : null));
         }

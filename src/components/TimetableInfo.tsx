@@ -7,9 +7,9 @@ import Lessons from "./Lessons.tsx";
 interface Props {
     timetable: Timetable;
     selectedClassId: string | null;
-    selectedGroups: string[];
+    selectedGroupIds: string[];
     setSelectedClassIdCallback: (classId: string | null) => void;
-    setSelectedGroupsCallback: (groups: string[]) => void;
+    setSelectedGroupIdsCallback: (groupIds: string[]) => void;
 }
 
 function TimetableInfo(props: Props) {
@@ -50,11 +50,11 @@ function TimetableInfo(props: Props) {
             <p className="display-1 fw-bold">
                 <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
                                firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}
-                               selectedGroups={props.selectedGroups}/>
+                               selectedGroupIds={props.selectedGroupIds}/>
             </p>
             <Lessons currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
                      firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}
-                     selectedGroups={props.selectedGroups}/>
+                     selectedGroupIds={props.selectedGroupIds}/>
         </div>
     );
 }

@@ -1,14 +1,15 @@
 import Day from "./Day.ts";
 import HourTime from "./HourTime.ts";
+import Group from "./Group.ts";
 
 class Timetable {
     days: Day[];
-    groups: string[];
+    groupGroups: Group[][];
     hourTimes: HourTime[];
 
-    constructor(days: Day[], groups: string[], hourTimes: HourTime[]) {
+    constructor(days: Day[], groups: Group[][], hourTimes: HourTime[]) {
         this.days = days;
-        this.groups = groups;
+        this.groupGroups = groups;
         this.hourTimes = hourTimes;
     }
 }
