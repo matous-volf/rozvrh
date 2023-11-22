@@ -33,11 +33,11 @@ function TimetableInfo(props: Props) {
         )
     }
 
-    const hours = props.timetable.days[dayIndex].hours;
-    const firstHourIndex = hours.findIndex((hour) => hour.isSelected);
-    const lastHourIndex = hours.findLastIndex((hour) => hour.isSelected);
+    const hours = props.timetable.days[dayIndex]?.hours;
+    const firstHourIndex = hours?.findIndex((hour) => hour.isSelected);
+    const lastHourIndex = hours?.findLastIndex((hour) => hour.isSelected);
 
-    if (firstHourIndex === -1 || lastHourIndex === -1) {
+    if (firstHourIndex === -1 || lastHourIndex === -1 || hours === undefined) {
         return (
             <>
                 <p>Dnes není žádné vyučování.</p>
