@@ -9,10 +9,6 @@ interface Props {
     isQueryLoading: boolean;
     isQueryError: boolean;
     timetable: Timetable | null;
-    selectedClassId: string | null;
-    selectedGroupIds: string[];
-    setSelectedClassIdCallback: (classId: string | null) => void;
-    setSelectedGroupIdsCallback: (groups: string[]) => void;
 }
 
 function MainPage(props: Props) {

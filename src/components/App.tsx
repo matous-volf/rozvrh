@@ -41,29 +41,20 @@ function App() {
 
     const timetable = timetableQuery.data === undefined ? null : timetableQuery.data;
 
-    const childrenProps = useMemo(() => {
-        return {
-            isQueryLoading: timetableQuery.isLoading,
-            isQueryError: timetableQuery.isError,
-            timetable: timetable,
-            selectedClassId: selectedClassId,
-            selectedGroupIds: selectedGroupIds,
-            setSelectedClassIdCallback: handleSelectedClassIdChange,
-            setSelectedGroupIdsCallback: handleSelectedGroupIdsChange
-        };
-    }, [timetableQuery.isLoading, timetableQuery.isError, timetable, selectedClassId, selectedGroupIds,
-        handleSelectedClassIdChange, handleSelectedGroupIdsChange]);
-
     const router = useMemo(() => createBrowserRouter([
         {
             path: "/",
-            element: <MainPage {...childrenProps}/>,
+            element: <MainPage timetable={timetable} isQueryLoading={timetableQuery.isLoading}
+                               isQueryError={timetableQuery.isError}/>,
         },
         {
             path: "/nastaveni",
-            element: <SettingsPage {...childrenProps}/>,
+            element: <SettingsPage timetable={timetable} selectedClassId={selectedClassId}
+                                   selectedGroupIds={selectedGroupIds}
+                                   setSelectedClassIdCallback={handleSelectedClassIdChange}
+                                   setSelectedGroupIdsCallback={handleSelectedGroupIdsChange}/>,
         },
-    ]), [childrenProps]);
+    ]), [timetable, timetableQuery, selectedClassId, selectedGroupIds, handleSelectedClassIdChange, handleSelectedGroupIdsChange]);
 
     return (
         <div className="h-100">
