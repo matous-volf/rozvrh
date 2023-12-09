@@ -1,7 +1,7 @@
 import {ChangeEvent, useEffect, useMemo, useState} from "react";
 import {nanoid} from "nanoid";
 import {useQuery} from "@tanstack/react-query";
-import {getClassIds} from "../api/bakalariScraper.ts";
+import {getClassIds} from "../api/timetable.ts";
 import ClassId from "../models/ClassId.ts";
 import {FormSelect} from "react-bootstrap";
 

@@ -4,7 +4,8 @@ import MainPage from "./MainPage.tsx";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import SettingsPage from "./SettingsPage.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {getTimetable} from "../api/bakalariScraper.ts";
+import {getTimetable} from "../api/timetable.ts";
+import {getSchools} from "../api/schoolList.ts";
 
 function App() {
     const [cookies, setCookies] = useCookies(["selectedClassId", "selectedGroupIds"]);
