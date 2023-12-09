@@ -10,7 +10,7 @@ interface Props {
     setSelectedClassIdCallback: (classId: string | null) => void;
 }
 
-function ClassIdSettings(props: Props) {
+function ClassSettings(props: Props) {
     const [selectedClassId, setSelectedClassId] = useState<string | null>(props.selectedClassId);
 
     const setSelectedClassIdCallback = props.setSelectedClassIdCallback;
@@ -48,4 +48,4 @@ function ClassIdSettings(props: Props) {
     );
 }
 
-export default ClassIdSettings
+export default ClassSettings

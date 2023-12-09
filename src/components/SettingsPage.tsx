@@ -1,4 +1,4 @@
-import ClassIdSettings from "./ClassIdSettings.tsx";
+import ClassSettings from "./ClassSettings.tsx";
 import Timetable from "../models/Timetable.ts";
 import GroupSettings from "./GroupSettings.tsx";
 import {Button} from "react-bootstrap";
@@ -26,7 +26,7 @@ function SettingsPage(props: Props) {
         <div className="container d-flex flex-column align-items-start gap-3 p-4" style={{maxWidth: "576px"}}>
             <h1>Nastavení</h1>
             <div>
-                <ClassIdSettings {...props}/>
+                <ClassSettings {...props}/>
             </div>
             <div>
                 {props.timetable !== null &&
