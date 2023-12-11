@@ -4,9 +4,13 @@ import GroupSettings from "./GroupSettings.tsx";
 import {Button} from "react-bootstrap";
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import School from "../models/School.ts";
+import SchoolSettings from "./SchoolSettings.tsx";
 
 interface Props {
     timetable: Timetable | null;
+    selectedSchool: School | null;
+    setSelectedSchoolCallback: (school: School | null) => void;
     selectedClassId: string | null;
     selectedGroupIds: string[];
     setSelectedClassIdCallback: (classId: string | null) => void;

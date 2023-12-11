@@ -5,18 +5,27 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import SettingsPage from "./SettingsPage.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {getTimetable} from "../api/timetable.ts";
-import {getSchools} from "../api/schoolList.ts";
+import School from "../models/School.ts";
 
 function App() {
-    const [cookies, setCookies] = useCookies(["selectedClassId", "selectedGroupIds"]);
-    const selectedGroupIds: string[] = cookies.selectedGroupIds;
-    if (selectedGroupIds === undefined) {
-        setCookies("selectedGroupIds", []);
+    const [cookies, setCookies] = useCookies(["selectedSchool", "selectedClassId", "selectedGroupIds"]);
+    const selectedSchool: School = cookies.selectedSchool;
+    if (selectedSchool === undefined) {
+        setCookies("selectedSchool", null);
     }
     const selectedClassId: string = cookies.selectedClassId;
     if (selectedClassId === undefined) {
         setCookies("selectedClassId", null);
     }
+    const selectedGroupIds: string[] = cookies.selectedGroupIds;
+    if (selectedGroupIds === undefined) {
+        setCookies("selectedGroupIds", []);
+    }
+
+    const handleSelectedSchoolChange = useCallback((school: School | null) => {
+            setCookies("selectedSchool", school);
+        }, [setCookies]
+    );
 
     const handleSelectedClassIdChange = useCallback((classId: string | null) => {
             setCookies("selectedClassId", classId);
@@ -35,10 +44,9 @@ function App() {
                 return null;
             }
 
-            return getTimetable(selectedClassId, selectedGroupIds)
+            return getTimetable(selectedClassId, selectedGroupIds);
         }
     });
-
     const timetable = timetableQuery.data === undefined ? null : timetableQuery.data;
 
     const router = useMemo(() => createBrowserRouter([
@@ -49,12 +57,16 @@ function App() {
         },
         {
             path: "/nastaveni",
-            element: <SettingsPage timetable={timetable} selectedClassId={selectedClassId}
+            element: <SettingsPage timetable={timetable}
+                                   selectedSchool={selectedSchool}
+                                   setSelectedSchoolCallback={handleSelectedSchoolChange}
+                                   selectedClassId={selectedClassId}
                                    selectedGroupIds={selectedGroupIds}
                                    setSelectedClassIdCallback={handleSelectedClassIdChange}
                                    setSelectedGroupIdsCallback={handleSelectedGroupIdsChange}/>,
         },
-    ]), [timetable, timetableQuery, selectedClassId, selectedGroupIds, handleSelectedClassIdChange, handleSelectedGroupIdsChange]);
+    ]), [timetable, timetableQuery, selectedSchool, handleSelectedSchoolChange, selectedClassId, selectedGroupIds,
+        handleSelectedClassIdChange, handleSelectedGroupIdsChange]);
 
     return (
         <div className="h-100">
