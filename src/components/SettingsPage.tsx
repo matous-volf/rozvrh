@@ -30,6 +30,9 @@ function SettingsPage(props: Props) {
         <div className="container d-flex flex-column align-items-start gap-3 p-4" style={{maxWidth: "576px"}}>
             <h1>Nastavení</h1>
             <div>
+                <SchoolSettings {...props}/>
+            </div>
+            <div>
                 <ClassSettings {...props}/>
             </div>
             <div>
