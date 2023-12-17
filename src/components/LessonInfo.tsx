@@ -6,15 +6,15 @@ interface Props {
 }
 
 function LessonInfo(props: Props) {
-    if (props.lesson === null) {
-        return (
-            <span className="fw-bold">volno</span>
-        );
-    }
-
     if (props.isBreak) {
         return (
             <span className="fw-bold">přestávka</span>
+        );
+    }
+
+    if (props.lesson === null) {
+        return (
+            <span className="fw-bold">volno</span>
         );
     }
 

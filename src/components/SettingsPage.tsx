@@ -1,12 +1,18 @@
-import ClassIdSettings from "./ClassIdSettings.tsx";
+import ClassSettings from "./ClassSettings.tsx";
 import Timetable from "../models/Timetable.ts";
 import GroupSettings from "./GroupSettings.tsx";
 import {Button} from "react-bootstrap";
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import School from "../models/School.ts";
+import SchoolSettings from "./SchoolSettings.tsx";
 
 interface Props {
+    isTimetableQueryLoading: boolean;
+    isTimetableQueryError: boolean;
     timetable: Timetable | null;
+    selectedSchool: School | null;
+    setSelectedSchoolCallback: (school: School | null) => void;
     selectedClassId: string | null;
     selectedGroupIds: string[];
     setSelectedClassIdCallback: (classId: string | null) => void;
@@ -25,11 +31,15 @@ function SettingsPage(props: Props) {
     return (
         <div className="container d-flex flex-column align-items-start gap-3 p-4" style={{maxWidth: "576px"}}>
             <h1>Nastavení</h1>
-            <div>
-                <ClassIdSettings {...props}/>
+            <div className="w-100">
+                <SchoolSettings {...props}/>
+            </div>
+            <div className="w-100">
+                {props.selectedSchool !== null &&
+                    <ClassSettings {...props} selectedSchool={props.selectedSchool}/>}
             </div>
             <div>
-                {props.timetable !== null &&
+                {props.selectedClassId !== null &&
                     <GroupSettings {...props} timetable={props.timetable}
                                    setSelectedGroupIdsCallback={setSelectedGroupIds}/>}
             </div>

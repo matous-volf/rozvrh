@@ -9,10 +9,6 @@ interface Props {
     isQueryLoading: boolean;
     isQueryError: boolean;
     timetable: Timetable | null;
-    selectedClassId: string | null;
-    selectedGroupIds: string[];
-    setSelectedClassIdCallback: (classId: string | null) => void;
-    setSelectedGroupIdsCallback: (groups: string[]) => void;
 }
 
 function MainPage(props: Props) {
@@ -37,7 +33,7 @@ function MainPage(props: Props) {
                 {
                     props.isQueryLoading ? (<p>Načítání...</p>
                     ) : props.isQueryError ? (<p>Rozvrh se nepodařilo načíst.</p>
-                    ) : props.timetable === null ? (<p>Zvolte třídu a skupiny v nastavení.</p>
+                    ) : props.timetable === null ? (<p>Zvolte školu, třídu a skupiny v nastavení.</p>
                     ) : <TimetableInfo {...props} timetable={props.timetable}/>
                 }
             </div>

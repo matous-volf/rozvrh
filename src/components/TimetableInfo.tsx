@@ -6,10 +6,6 @@ import Lessons from "./Lessons.tsx";
 
 interface Props {
     timetable: Timetable;
-    selectedClassId: string | null;
-    selectedGroupIds: string[];
-    setSelectedClassIdCallback: (classId: string | null) => void;
-    setSelectedGroupIdsCallback: (groupIds: string[]) => void;
 }
 
 function TimetableInfo(props: Props) {
@@ -49,12 +45,10 @@ function TimetableInfo(props: Props) {
         <div className="d-flex flex-column gap-4">
             <p className="display-1 fw-bold">
                 <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
-                               firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}
-                               selectedGroupIds={props.selectedGroupIds}/>
+                               firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
             </p>
             <Lessons currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
-                     firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}
-                     selectedGroupIds={props.selectedGroupIds}/>
+                     firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
         </div>
     );
 }
