@@ -64,7 +64,9 @@ function App() {
         },
         {
             path: "/nastaveni",
-            element: <SettingsPage timetable={timetable}
+            element: <SettingsPage isTimetableQueryLoading={timetableQuery.isLoading}
+                                   isTimetableQueryError={timetableQuery.isError}
+                                   timetable={timetable}
                                    selectedSchool={selectedSchool}
                                    setSelectedSchoolCallback={handleSelectedSchoolChange}
                                    selectedClassId={selectedClassId}

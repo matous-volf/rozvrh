@@ -8,6 +8,8 @@ import School from "../models/School.ts";
 import SchoolSettings from "./SchoolSettings.tsx";
 
 interface Props {
+    isTimetableQueryLoading: boolean;
+    isTimetableQueryError: boolean;
     timetable: Timetable | null;
     selectedSchool: School | null;
     setSelectedSchoolCallback: (school: School | null) => void;
@@ -37,7 +39,7 @@ function SettingsPage(props: Props) {
                     <ClassSettings {...props} selectedSchool={props.selectedSchool}/>}
             </div>
             <div>
-                {props.timetable !== null &&
+                {props.selectedClassId !== null &&
                     <GroupSettings {...props} timetable={props.timetable}
                                    setSelectedGroupIdsCallback={setSelectedGroupIds}/>}
             </div>

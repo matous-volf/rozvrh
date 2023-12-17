@@ -18,7 +18,7 @@ function SchoolSettings(props: Props) {
         setSelectedSchoolCallback(selectedSchool);
     }, [setSelectedSchoolCallback, selectedSchool]);
 
-    const {data, isLoading} = useQuery({
+    const {data, isLoading, isError} = useQuery({
         queryKey: ["schools"],
         queryFn: getSchools
     });
@@ -34,10 +34,15 @@ function SchoolSettings(props: Props) {
     return (
         <>
             <h2>Škola</h2>
-            <Typeahead style={{maxWidth: "100%"}} options={schools} labelKey="name"
-                       onChange={(selected) => setSelectedSchool(selected.length < 1 ? null : selected[0] as School)}
-                       selected={selectedSchool === null ? [] : [selectedSchool as Option]}
-                       id="input-school"/>
+            {(isLoading ? (<p>Načítání...</p>
+            ) : isError ? (<p>Školy se nepodařilo načíst.</p>
+            ) : <Typeahead style={{maxWidth: "100%"}} options={schools} labelKey="name"
+                           onChange={(selected) => setSelectedSchool(selected.length < 1 ? null : selected[0] as School)}
+                           selected={selectedSchool === null ? [] : [selectedSchool as Option]}
+                           id="input-school" emptyLabel="Nebyla nalezena žádná škola."
+                           paginationText="Zobrazit další výsledky" highlightOnlyResult={true}
+                           placeholder="Zadejte název školy."/>)
+            }
         </>
     );
 }

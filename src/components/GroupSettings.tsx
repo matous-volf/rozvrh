@@ -4,7 +4,9 @@ import Timetable from "../models/Timetable.ts";
 import {FormCheck} from "react-bootstrap";
 
 interface Props {
-    timetable: Timetable;
+    isTimetableQueryLoading: boolean;
+    isTimetableQueryError: boolean;
+    timetable: Timetable | null;
     selectedGroupIds: string[];
     setSelectedGroupIdsCallback: (groupIds: string[]) => void;
 }
@@ -12,10 +14,18 @@ interface Props {
 function GroupSettings(props: Props) {
     const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>(props.selectedGroupIds);
 
+    useEffect(() => {
+        setSelectedGroupIds(props.selectedGroupIds);
+    }, [props.selectedGroupIds]);
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const selectedGroupId = e.target.dataset.groupId!;
 
         setSelectedGroupIds((prevSelectedGroupIds) => {
+            if (props.timetable === null) {
+                return [];
+            }
+
             // This cleans up any previously selected groups that are no longer available.
             const newSelectedGroupIds: string[] = [];
             for (const groupGroup of props.timetable.groupGroups) {
@@ -59,9 +69,11 @@ function GroupSettings(props: Props) {
             <h2>Skupiny</h2>
             <p>Své skupiny najdete v rozvrhu aplikace Bakaláři.</p>
 
-            {props.timetable.groupGroups.length < 1 && <p>Nejsou k dispozici žádné skupiny.</p>}
-
-            <div className="d-flex flex-column gap-2">
+            {(props.isTimetableQueryLoading ? (<p>Načítání...</p>
+            ) : props.isTimetableQueryError ? (<p>Skupiny se nepodařilo načíst.</p>
+            ) : props.timetable === null ? (<></>
+            ) : props.timetable.groupGroups.length < 1 ? (<p>Tato třída neobsahuje žádné skupiny.</p>
+            ) : <div className="d-flex flex-column gap-2">
                 {props.timetable.groupGroups.sort().map((groupGroup) => (
                     <div key={nanoid()}>
                         {groupGroup
@@ -81,7 +93,8 @@ function GroupSettings(props: Props) {
                             ))}
                     </div>
                 ))}
-            </div>
+            </div>)
+            }
         </>
     );
 }
