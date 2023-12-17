@@ -7,46 +7,66 @@ import ClassId from "../models/ClassId.ts";
 import HourTime from "../models/HourTime.ts";
 import {DateTime} from "luxon";
 import Group from "../models/Group.ts";
+import School from "../models/School.ts";
 
-const timetableBlankPermanentUrl = "https://delta-skola.bakalari.cz/Timetable/Public";
+const timetableBlankPermanentUrl = "Timetable/Public";
 
-const timetableClassPermanentBaseUrl = "https://delta-skola.bakalari.cz/Timetable/Public/Permanent/Class/";
-const timetableClassCurrentBaseUrl = "https://delta-skola.bakalari.cz/Timetable/Public/Actual/Class/";
+const timetableClassPermanentBaseUrl = "Timetable/Public/Permanent/Class/";
+const timetableClassCurrentBaseUrl = "Timetable/Public/Actual/Class/";
 
 async function fetchHtml(url: string) {
-    const response = await fetch(url);
+    let response;
+    try {
+        response = await fetch(url);
+    } catch (_) {
+        return null;
+    }
+
     if (!response.ok) {
-        throw new Error();
+        return null;
     }
     return await response.text();
 }
 
-export async function getClassIds(): Promise<ClassId[]> {
-    const html = await fetchHtml(timetableBlankPermanentUrl);
+export async function getClassIds(school: School): Promise<ClassId[]> {
+    console.log(new URL(timetableBlankPermanentUrl, school.url).toString());
+
+    const html = await fetchHtml(new URL(timetableBlankPermanentUrl, school.url).toString());
+    if (html === null) {
+        throw new Error();
+    }
     const $ = cheerio.load(html);
 
     const classIds: ClassId[] = [];
-    const classSelect = $("#selectedClass")[0];
-    for (const option of classSelect.children) {
-        const id = $(option).attr("value");
-        const name = $(option).text();
 
-        if (id === undefined || name.trim() === "") {
-            continue;
+    try {
+        const classSelect = $("#selectedClass")[0];
+        for (const option of classSelect.children) {
+            const id = $(option).attr("value");
+            const name = $(option).text();
+
+            if (id === undefined || name.trim() === "") {
+                continue;
+            }
+
+            classIds.push(new ClassId(id, name));
         }
-
-        classIds.push(new ClassId(id, name));
+    } catch (_) {
+        throw new Error();
     }
 
     return classIds;
 }
 
-export async function getTimetable(classId: string, selectedGroupIds: string[]): Promise<Timetable> {
-    const permanentUrl = timetableClassPermanentBaseUrl + classId;
-    const currentUrl = timetableClassCurrentBaseUrl + classId;
+export async function getTimetable(school: School, classId: string, selectedGroupIds: string[]): Promise<Timetable> {
+    const permanentUrl = new URL(timetableClassPermanentBaseUrl + classId, school.url).toString();
+    const currentUrl = new URL(timetableClassCurrentBaseUrl + classId, school.url).toString();
 
     const permanentHtml = await fetchHtml(permanentUrl);
     const currentHtml = await fetchHtml(currentUrl);
+    if (permanentHtml === null || currentHtml === null) {
+        throw new Error();
+    }
 
     const daysPermanent = createDays(permanentHtml, selectedGroupIds);
     const daysCurrent = createDays(currentHtml, selectedGroupIds);

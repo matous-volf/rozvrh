@@ -9,7 +9,7 @@ import School from "../models/School.ts";
 
 function App() {
     const [cookies, setCookies] = useCookies(["selectedSchool", "selectedClassId", "selectedGroupIds"]);
-    const selectedSchool: School = cookies.selectedSchool;
+    const selectedSchool: School | null = cookies.selectedSchool;
     if (selectedSchool === undefined) {
         setCookies("selectedSchool", null);
     }
@@ -23,13 +23,20 @@ function App() {
     }
 
     const handleSelectedSchoolChange = useCallback((school: School | null) => {
-            setCookies("selectedSchool", school);
-        }, [setCookies]
+            if (school?.id !== selectedSchool?.id) {
+                setCookies("selectedClassId", null);
+                setCookies("selectedGroupIds", []);
+                setCookies("selectedSchool", school);
+            }
+        }, [selectedSchool, setCookies]
     );
 
     const handleSelectedClassIdChange = useCallback((classId: string | null) => {
-            setCookies("selectedClassId", classId);
-        }, [setCookies]
+            if (classId !== selectedClassId) {
+                setCookies("selectedGroupIds", []);
+                setCookies("selectedClassId", classId);
+            }
+        }, [selectedClassId, setCookies]
     );
 
     const handleSelectedGroupIdsChange = useCallback((groupIds: string[]) => {
@@ -38,13 +45,13 @@ function App() {
     );
 
     const timetableQuery = useQuery({
-        queryKey: ["timetable", selectedClassId, selectedGroupIds],
+        queryKey: ["timetable", selectedSchool?.id, selectedClassId, selectedGroupIds],
         queryFn: () => {
-            if (selectedClassId === null) {
+            if (selectedSchool === null || selectedClassId === null) {
                 return null;
             }
 
-            return getTimetable(selectedClassId, selectedGroupIds);
+            return getTimetable(selectedSchool, selectedClassId, selectedGroupIds);
         }
     });
     const timetable = timetableQuery.data === undefined ? null : timetableQuery.data;

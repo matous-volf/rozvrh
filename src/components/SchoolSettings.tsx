@@ -1,16 +1,16 @@
 import {useEffect, useMemo, useState} from "react";
-import {nanoid} from "nanoid";
 import {useQuery} from "@tanstack/react-query";
-import {FormSelect} from "react-bootstrap";
 import School from "../models/School.ts";
 import {getSchools} from "../api/schools.ts";
+import {Typeahead} from "react-bootstrap-typeahead";
+import {Option} from "react-bootstrap-typeahead/types/types";
 
 interface Props {
     selectedSchool: School | null;
     setSelectedSchoolCallback: (school: School | null) => void;
 }
 
-function ClassSettings(props: Props) {
+function SchoolSettings(props: Props) {
     const [selectedSchool, setSelectedSchool] = useState<School | null>(props.selectedSchool);
 
     const setSelectedSchoolCallback = props.setSelectedSchoolCallback;
@@ -34,15 +34,12 @@ function ClassSettings(props: Props) {
     return (
         <>
             <h2>Škola</h2>
-            <FormSelect onChange={(e) => setSelectedSchool(schools.find((school) => school.id === e.target.value)!)}
-                        value={selectedSchool === null ? "" : selectedSchool.id} id="class-select" className="w-auto">
-                {selectedSchool === null && <option></option>}
-                {schools.map((school) => (
-                    <option key={nanoid()} value={school.id}>{school.name}</option>
-                ))}
-            </FormSelect>
+            <Typeahead style={{maxWidth: "100%"}} options={schools} labelKey="name"
+                       onChange={(selected) => setSelectedSchool(selected.length < 1 ? null : selected[0] as School)}
+                       selected={selectedSchool === null ? [] : [selectedSchool as Option]}
+                       id="input-school"/>
         </>
     );
 }
 
-export default ClassSettings
+export default SchoolSettings;

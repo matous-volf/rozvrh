@@ -29,11 +29,12 @@ function SettingsPage(props: Props) {
     return (
         <div className="container d-flex flex-column align-items-start gap-3 p-4" style={{maxWidth: "576px"}}>
             <h1>Nastavení</h1>
-            <div>
+            <div className="w-100">
                 <SchoolSettings {...props}/>
             </div>
-            <div>
-                <ClassSettings {...props}/>
+            <div className="w-100">
+                {props.selectedSchool !== null &&
+                    <ClassSettings {...props} selectedSchool={props.selectedSchool}/>}
             </div>
             <div>
                 {props.timetable !== null &&
