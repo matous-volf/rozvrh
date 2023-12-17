@@ -15,16 +15,12 @@ const timetableClassPermanentBaseUrl = "Timetable/Public/Permanent/Class/";
 const timetableClassCurrentBaseUrl = "Timetable/Public/Actual/Class/";
 
 async function fetchHtml(url: string) {
-    let response;
-    try {
-        response = await fetch(url);
-    } catch (_) {
-        return null;
-    }
+    const response = await fetch(url);
 
     if (!response.ok) {
-        return null;
+        throw new Error();
     }
+
     return await response.text();
 }
 
@@ -32,9 +28,6 @@ export async function getClassIds(school: School): Promise<ClassId[]> {
     console.log(new URL(timetableBlankPermanentUrl, school.url).toString());
 
     const html = await fetchHtml(new URL(timetableBlankPermanentUrl, school.url).toString());
-    if (html === null) {
-        throw new Error();
-    }
     const $ = cheerio.load(html);
 
     const classIds: ClassId[] = [];
@@ -51,7 +44,7 @@ export async function getClassIds(school: School): Promise<ClassId[]> {
 
             classIds.push(new ClassId(id, name));
         }
-    } catch (_) {
+    } catch (e) {
         throw new Error();
     }
 
@@ -64,9 +57,6 @@ export async function getTimetable(school: School, classId: string, selectedGrou
 
     const permanentHtml = await fetchHtml(permanentUrl);
     const currentHtml = await fetchHtml(currentUrl);
-    if (permanentHtml === null || currentHtml === null) {
-        throw new Error();
-    }
 
     const daysPermanent = createDays(permanentHtml, selectedGroupIds);
     const daysCurrent = createDays(currentHtml, selectedGroupIds);
