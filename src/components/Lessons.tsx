@@ -23,25 +23,33 @@ function Lessons(props: Props) {
         }
 
         if (props.currentTime < props.hourTimes[i].start) {
-            if (i > 0) {
+            if (i > props.firstHourIndex) {
                 currentHourIndex = i - 1;
+                isBreak = true;
             }
             nextHourIndex = i;
-            isBreak = true;
-
-            if (!props.hours[nextHourIndex].isSelected) {
-                currentHourIndex = null;
-                nextHourIndex = i + props.hours.slice(i).findIndex((hour) => hour.isSelected);
-                isBreak = false;
-            }
         } else {
             currentHourIndex = i;
-
             if (i < props.lastHourIndex) {
                 nextHourIndex = i + 1;
             }
         }
 
+        if (currentHourIndex !== null && !props.hours[currentHourIndex].isSelected) {
+            currentHourIndex = null;
+            isBreak = false;
+        }
+
+        if (nextHourIndex !== null && !props.hours[nextHourIndex].isSelected) {
+            if (currentHourIndex === null || isBreak) {
+                if (isBreak) {
+                    currentHourIndex = null;
+                }
+
+                nextHourIndex = nextHourIndex + props.hours.slice(nextHourIndex).findIndex((hour) => hour.isSelected);
+                isBreak = false;
+            }
+        }
         break;
     }
 
