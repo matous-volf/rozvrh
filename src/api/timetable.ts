@@ -25,8 +25,6 @@ async function fetchHtml(url: string) {
 }
 
 export async function getClassIds(school: School): Promise<ClassId[]> {
-    console.log(new URL(timetableBlankPermanentUrl, school.url).toString());
-
     const html = await fetchHtml(new URL(timetableBlankPermanentUrl, school.url).toString());
     const $ = cheerio.load(html);
 

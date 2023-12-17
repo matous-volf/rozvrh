@@ -12,7 +12,7 @@ function TimetableInfo(props: Props) {
     const [currentTime, setCurrentTime] = useState(DateTime.now());
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setCurrentTime(DateTime.now().minus({hours: 4}));
+            setCurrentTime(DateTime.now());
         }, 100);
 
         return () => {
@@ -20,7 +20,7 @@ function TimetableInfo(props: Props) {
         }
     }, []);
 
-    const dayIndex: number = currentTime.weekday - 5;
+    const dayIndex: number = currentTime.weekday - 1;
     if (dayIndex > 4) {
         return (
             <>
