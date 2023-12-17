@@ -5,6 +5,8 @@ Inspirováno [@czM1K3](https://github.com/czM1K3)/[DeltaTime](https://github.com
 
 Aplikace je nasazena na [rozvrh.matousvolf.cz](https://rozvrh.matousvolf.cz/).
 
+Seznam škol je načítán z [tohoto zdroje](https://gitlab.com/vitSkalicky/bakalari-schools-list).
+
 Aktuální rozvrh, třídy a skupiny jsou extrahovány z
 HTML [veřejného rozvrhu](https://delta-skola.bakalari.cz/Timetable/Public) na stránkách školy.
 
