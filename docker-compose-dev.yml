@@ -1,0 +1,10 @@
+services:
+  web-server:
+    build:
+      dockerfile: ./docker/web-server-dev/Dockerfile
+      context: ./
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/srv/app
+    tty: true

@@ -1,0 +1,11 @@
+services:
+  web-server:
+    build:
+      dockerfile: ./docker/web-server-prod/Dockerfile
+      context: ./
+    networks:
+      - web-server-network
+
+networks:
+  web-server-network:
+    external: true
