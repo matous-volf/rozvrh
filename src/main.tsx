@@ -14,10 +14,18 @@ Settings.defaultZone = "Europe/Prague";
 const queryClient = new QueryClient();
 ReactGA.initialize("G-60HTHGY4JH");
 
+const cookieExpirationDate = new Date();
+cookieExpirationDate.setMonth(6);
+cookieExpirationDate.setDate(28);
+
+if (new Date() > cookieExpirationDate) {
+    cookieExpirationDate.setFullYear(cookieExpirationDate.getFullYear() + 1);
+}
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <CookiesProvider defaultSetOptions={{expires: new Date("2100-01-01")}}>
+            <CookiesProvider defaultSetOptions={{expires: cookieExpirationDate}}>
                 <App/>
             </CookiesProvider>
         </QueryClientProvider>
