@@ -5,6 +5,7 @@ import TimeRemaining from "./TimeRemaining.tsx";
 import Lessons from "./Lessons.tsx";
 
 interface Props {
+    teacherModeEnabled: boolean;
     timetable: Timetable;
 }
 
@@ -48,8 +49,8 @@ function TimetableInfo(props: Props) {
                 <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
                                firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
             </p>
-            <Lessons currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
-                     firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
+            <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime} hourTimes={props.timetable.hourTimes}
+                     hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
         </div>
     );
 }
