@@ -35,7 +35,7 @@ function ClassSettings(props: Props) {
 
     return (
         <>
-            <h2>Třída</h2>
+            <h3>Třída</h3>
             {(isLoading ? (<p>Načítání...</p>
             ) : isError ? (<p>Třídy se nepodařilo načíst. Škola pravděpodobně nepovolila veřejný rozvrh.</p>
             ) : <FormSelect onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId ?? ""}

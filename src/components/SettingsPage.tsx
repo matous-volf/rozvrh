@@ -30,11 +30,11 @@ function SettingsPage(props: Props) {
 
     return (
         <div className="container d-flex flex-column align-items-start gap-3 p-4" style={{maxWidth: "576px"}}>
-            <h1>Nastavení</h1>
+            <h2>Nastavení</h2>
             <div className="w-100">
                 <SchoolSettings {...props}/>
             </div>
-            <div className="w-100">
+            <div>
                 {props.selectedSchool !== null &&
                     <ClassSettings {...props} selectedSchool={props.selectedSchool}/>}
             </div>
@@ -44,7 +44,7 @@ function SettingsPage(props: Props) {
                                    setSelectedGroupIdsCallback={setSelectedGroupIds}/>}
             </div>
             <Link to="/">
-                <Button onClick={handleSave} variant="outline-secondary">
+                <Button onClick={handleSave} variant="primary">
                     <i className="bi bi-check-lg"></i> uložit
                 </Button>
             </Link>
