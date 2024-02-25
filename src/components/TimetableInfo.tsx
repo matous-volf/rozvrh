@@ -22,13 +22,6 @@ function TimetableInfo(props: Props) {
     }, []);
 
     const dayIndex: number = currentTime.weekday - 1;
-    if (dayIndex > 4) {
-        return (
-            <>
-                <p>Dnes není pracovní den.</p>
-            </>
-        )
-    }
 
     const hours = props.timetable.days[dayIndex]?.hours;
     const firstHourIndex = hours?.findIndex((hour) => hour.isSelected);
