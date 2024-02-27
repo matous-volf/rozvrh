@@ -1,5 +1,4 @@
-import {useCallback, useMemo} from "react";
-import {useCookies} from "react-cookie";
+import {useCallback, useMemo, useState} from "react";
 import MainPage from "./MainPage.tsx";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import SettingsPage from "./SettingsPage.tsx";
@@ -7,41 +6,50 @@ import {useQuery} from "@tanstack/react-query";
 import {getTimetable} from "../api/timetable.ts";
 import School from "../models/School.ts";
 
+function setLocalStorage(
+    key: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    value: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setState: React.Dispatch<React.SetStateAction<any>>
+) {
+    localStorage.setItem(key, JSON.stringify(value));
+    setState(value);
+}
+
 function App() {
-    const [cookies, setCookies] = useCookies(["selectedSchool", "selectedClassId", "selectedGroupIds"]);
-    const selectedSchool: School | null = cookies.selectedSchool;
-    if (selectedSchool === undefined) {
-        setCookies("selectedSchool", null);
-    }
-    const selectedClassId: string = cookies.selectedClassId;
-    if (selectedClassId === undefined) {
-        setCookies("selectedClassId", null);
-    }
-    const selectedGroupIds: string[] = cookies.selectedGroupIds;
-    if (selectedGroupIds === undefined) {
-        setCookies("selectedGroupIds", []);
-    }
+    const [selectedSchool, setSelectedSchool] = useState<School | null>(
+        JSON.parse(localStorage.getItem("selectedSchool")!)
+    );
+
+    const [selectedClassId, setSelectedClassId] = useState<string | null>(
+        JSON.parse(localStorage.getItem("selectedClassId")!)
+    );
+
+    const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>(
+        JSON.parse(localStorage.getItem("selectedGroupIds")!) || []
+    );
 
     const handleSelectedSchoolChange = useCallback((school: School | null) => {
             if (school?.id !== selectedSchool?.id) {
-                setCookies("selectedClassId", null);
-                setCookies("selectedGroupIds", []);
-                setCookies("selectedSchool", school);
+                setLocalStorage("selectedClassId", null, setSelectedClassId);
+                setLocalStorage("selectedGroupIds", [], setSelectedGroupIds);
+                setLocalStorage("selectedSchool", school, setSelectedSchool);
             }
-        }, [selectedSchool, setCookies]
+        }, [selectedSchool]
     );
 
     const handleSelectedClassIdChange = useCallback((classId: string | null) => {
             if (classId !== selectedClassId) {
-                setCookies("selectedGroupIds", []);
-                setCookies("selectedClassId", classId);
+                setLocalStorage("selectedGroupIds", [], setSelectedGroupIds);
+                setLocalStorage("selectedClassId", classId, setSelectedClassId);
             }
-        }, [selectedClassId, setCookies]
+        }, [selectedClassId]
     );
 
     const handleSelectedGroupIdsChange = useCallback((groupIds: string[]) => {
-            setCookies("selectedGroupIds", groupIds);
-        }, [setCookies]
+            setLocalStorage("selectedGroupIds", groupIds, setSelectedGroupIds);
+        }, []
     );
 
     const timetableQuery = useQuery({
@@ -57,25 +65,25 @@ function App() {
     const timetable = timetableQuery.data === undefined ? null : timetableQuery.data;
 
     const router = useMemo(() => createBrowserRouter([
-        {
-            path: "/",
-            element: <MainPage timetable={timetable} isQueryLoading={timetableQuery.isLoading}
-                               isQueryError={timetableQuery.isError}/>,
-        },
-        {
-            path: "/nastaveni",
-            element: <SettingsPage isTimetableQueryLoading={timetableQuery.isLoading}
-                                   isTimetableQueryError={timetableQuery.isError}
-                                   timetable={timetable}
-                                   selectedSchool={selectedSchool}
-                                   setSelectedSchoolCallback={handleSelectedSchoolChange}
-                                   selectedClassId={selectedClassId}
-                                   selectedGroupIds={selectedGroupIds}
-                                   setSelectedClassIdCallback={handleSelectedClassIdChange}
-                                   setSelectedGroupIdsCallback={handleSelectedGroupIdsChange}/>,
-        },
-    ]), [timetable, timetableQuery, selectedSchool, handleSelectedSchoolChange, selectedClassId, selectedGroupIds,
-        handleSelectedClassIdChange, handleSelectedGroupIdsChange]);
+                {
+                    path: "/",
+                    element: <MainPage timetable={timetable} isQueryLoading={timetableQuery.isLoading}
+                            isQueryError={timetableQuery.isError}/>,
+                },
+                {
+                    path: "/nastaveni",
+                    element: <SettingsPage isTimetableQueryLoading={timetableQuery.isLoading}
+                            isTimetableQueryError={timetableQuery.isError}
+                            timetable={timetable}
+                            selectedSchool={selectedSchool}
+                            setSelectedSchoolCallback={handleSelectedSchoolChange}
+                            selectedClassId={selectedClassId}
+                            selectedGroupIds={selectedGroupIds}
+                            setSelectedClassIdCallback={handleSelectedClassIdChange}
+                            setSelectedGroupIdsCallback={handleSelectedGroupIdsChange}/>,
+                },
+            ]), [timetable, timetableQuery, selectedSchool, handleSelectedSchoolChange, selectedClassId, selectedGroupIds,
+            handleSelectedClassIdChange, handleSelectedGroupIdsChange]);
 
     return (
         <div className="h-100">
