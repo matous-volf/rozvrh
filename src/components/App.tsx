@@ -6,12 +6,10 @@ import {useQuery} from "@tanstack/react-query";
 import {getTimetable} from "../api/timetable.ts";
 import School from "../models/School.ts";
 
-function setLocalStorage(
+function setLocalStorage<T extends T2, T2>(
     key: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    value: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setState: React.Dispatch<React.SetStateAction<any>>
+    value: T,
+    setState: React.Dispatch<React.SetStateAction<T2>>
 ) {
     localStorage.setItem(key, JSON.stringify(value));
     setState(value);
