@@ -176,9 +176,10 @@ function createDays(html: string, selectedGroupIds: string[], selectAllGroups: b
             for (const dayItemHover of dayItemHovers) {
                 const dayItem = $(dayItemHover).find(".day-flex");
 
-                const subject = $(dayItem).find(".middle").text().trim();
+                const middle = dayItem.find(".middle");
+                const subject = middle.text().trim();
 
-                if (subject === "") {
+                if (subject === "" || middle.prop("style")?.visibility === "hidden") {
                     continue;
                 }
 
