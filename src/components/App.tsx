@@ -11,6 +11,7 @@ function App() {
     const [selectedSchool, setSelectedSchool] = useLocalStorage<School | null>("selectedSchool", null);
     const [teacherModeEnabled, setTeacherModeEnabled] = useLocalStorage<boolean>("teacherModeEnabled", false);
     const [selectedClassId, setSelectedClassId] = useLocalStorage<string | null>("selectedClassId", null);
+    const [selectedTeacherId, setSelectedTeacherId] = useLocalStorage<string | null>("selectedTeacherId", null);
     const [selectedGroupIds, setSelectedGroupIds] = useLocalStorage<string[]>("selectedGroupIds", []);
 
     const handleSelectedSchoolChange = useCallback((school: School | null) => {
@@ -22,9 +23,7 @@ function App() {
         }, [selectedSchool?.id, setSelectedClassId, setSelectedGroupIds, setSelectedSchool]
     );
 
-    const handleTeacherModeEnabledChange = useCallback((teacherModeEnabled: boolean) => {
-        setCookies("teacherModeEnabled", teacherModeEnabled);
-    }, [setCookies]);
+    const handleTeacherModeEnabledChange = useCallback(setTeacherModeEnabled, [setTeacherModeEnabled]);
 
     const handleSelectedClassIdChange = useCallback((classId: string | null) => {
             if (classId !== selectedClassId) {
@@ -36,9 +35,9 @@ function App() {
 
     const handleSelectedTeacherIdChange = useCallback((teacherId: string | null) => {
             if (teacherId !== selectedTeacherId) {
-                setCookies("selectedTeacherId", teacherId);
+                setSelectedTeacherId(teacherId);
             }
-        }, [selectedTeacherId, setCookies]
+        }, [selectedTeacherId, setSelectedTeacherId]
     );
 
     const handleSelectedGroupIdsChange = useCallback((groupIds: string[]) => {
@@ -60,8 +59,8 @@ function App() {
             }
 
             return teacherModeEnabled ?
-                getTimetableTeacher(selectedSchool, selectedTeacherId) :
-                getTimetableClass(selectedSchool, selectedClassId, selectedGroupIds);
+                getTimetableTeacher(selectedSchool, selectedTeacherId!) :
+                getTimetableClass(selectedSchool, selectedClassId!, selectedGroupIds);
         }
     });
     const timetable = timetableQuery.data === undefined ? null : timetableQuery.data;
