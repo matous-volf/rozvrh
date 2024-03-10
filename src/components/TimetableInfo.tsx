@@ -5,6 +5,7 @@ import TimeRemaining from "./TimeRemaining.tsx";
 import Lessons from "./Lessons.tsx";
 
 interface Props {
+    teacherModeEnabled: boolean;
     timetable: Timetable;
 }
 
@@ -21,13 +22,6 @@ function TimetableInfo(props: Props) {
     }, []);
 
     const dayIndex: number = currentTime.weekday - 1;
-    if (dayIndex > 4) {
-        return (
-            <>
-                <p>Dnes není pracovní den.</p>
-            </>
-        )
-    }
 
     const hours = props.timetable.days[dayIndex]?.hours;
     const firstHourIndex = hours?.findIndex((hour) => hour.isSelected);
@@ -48,8 +42,8 @@ function TimetableInfo(props: Props) {
                 <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
                                firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
             </p>
-            <Lessons currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
-                     firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
+            <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime} hourTimes={props.timetable.hourTimes}
+                     hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
         </div>
     );
 }

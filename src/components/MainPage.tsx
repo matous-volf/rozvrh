@@ -6,6 +6,7 @@ import {useEffect} from "react";
 import NoSleep from 'nosleep.js';
 
 interface Props {
+    teacherModeEnabled: boolean;
     isQueryLoading: boolean;
     isQueryError: boolean;
     timetable: Timetable | null;
@@ -33,7 +34,7 @@ function MainPage(props: Props) {
                 {
                     props.isQueryLoading ? (<p>Načítání...</p>
                     ) : props.isQueryError ? (<p>Rozvrh se nepodařilo načíst.</p>
-                    ) : props.timetable === null ? (<p>Zvolte školu, třídu a skupiny v nastavení.</p>
+                    ) : props.timetable === null ? (<p>Zvolte školu, třídu a skupiny nebo učitele v nastavení.</p>
                     ) : <TimetableInfo {...props} timetable={props.timetable}/>
                 }
             </div>

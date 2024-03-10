@@ -4,11 +4,17 @@ import MainPage from "./MainPage.tsx";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import SettingsPage from "./SettingsPage.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {getTimetable} from "../api/timetable.ts";
+import {getTimetableClass, getTimetableTeacher} from "../api/timetable.ts";
 import School from "../models/School.ts";
 
 function App() {
-    const [cookies, setCookies] = useCookies(["selectedSchool", "selectedClassId", "selectedGroupIds"]);
+    const [cookies, setCookies] = useCookies([
+        "selectedSchool", "teacherModeEnabled", "selectedClassId", "selectedTeacherId", "selectedGroupIds",
+    ]);
+    const teacherModeEnabled: boolean = cookies.teacherModeEnabled;
+    if (teacherModeEnabled === undefined) {
+        setCookies("teacherModeEnabled", false);
+    }
     const selectedSchool: School | null = cookies.selectedSchool;
     if (selectedSchool === undefined) {
         setCookies("selectedSchool", null);
@@ -16,6 +22,10 @@ function App() {
     const selectedClassId: string = cookies.selectedClassId;
     if (selectedClassId === undefined) {
         setCookies("selectedClassId", null);
+    }
+    const selectedTeacherId: string = cookies.selectedTeacherId;
+    if (selectedTeacherId === undefined) {
+        setCookies("selectedTeacherId", null);
     }
     const selectedGroupIds: string[] = cookies.selectedGroupIds;
     if (selectedGroupIds === undefined) {
@@ -31,6 +41,10 @@ function App() {
         }, [selectedSchool, setCookies]
     );
 
+    const handleTeacherModeEnabledChange = useCallback((teacherModeEnabled: boolean) => {
+        setCookies("teacherModeEnabled", teacherModeEnabled);
+    }, [setCookies]);
+
     const handleSelectedClassIdChange = useCallback((classId: string | null) => {
             if (classId !== selectedClassId) {
                 setCookies("selectedGroupIds", []);
@@ -39,19 +53,34 @@ function App() {
         }, [selectedClassId, setCookies]
     );
 
+    const handleSelectedTeacherIdChange = useCallback((teacherId: string | null) => {
+            if (teacherId !== selectedTeacherId) {
+                setCookies("selectedTeacherId", teacherId);
+            }
+        }, [selectedTeacherId, setCookies]
+    );
+
     const handleSelectedGroupIdsChange = useCallback((groupIds: string[]) => {
             setCookies("selectedGroupIds", groupIds);
         }, [setCookies]
     );
 
     const timetableQuery = useQuery({
-        queryKey: ["timetable", selectedSchool?.id, selectedClassId, selectedGroupIds],
+        queryKey: ["timetable",
+            selectedSchool?.id,
+            teacherModeEnabled,
+            selectedClassId,
+            selectedTeacherId,
+            selectedGroupIds],
         queryFn: () => {
-            if (selectedSchool === null || selectedClassId === null) {
+            if (selectedSchool === null ||
+                (teacherModeEnabled ? selectedTeacherId === null : selectedClassId === null)) {
                 return null;
             }
 
-            return getTimetable(selectedSchool, selectedClassId, selectedGroupIds);
+            return teacherModeEnabled ?
+                getTimetableTeacher(selectedSchool, selectedTeacherId) :
+                getTimetableClass(selectedSchool, selectedClassId, selectedGroupIds);
         }
     });
     const timetable = timetableQuery.data === undefined ? null : timetableQuery.data;
@@ -59,7 +88,9 @@ function App() {
     const router = useMemo(() => createBrowserRouter([
         {
             path: "/",
-            element: <MainPage timetable={timetable} isQueryLoading={timetableQuery.isLoading}
+            element: <MainPage teacherModeEnabled={teacherModeEnabled}
+                               timetable={timetable}
+                               isQueryLoading={timetableQuery.isLoading}
                                isQueryError={timetableQuery.isError}/>,
         },
         {
@@ -68,14 +99,19 @@ function App() {
                                    isTimetableQueryError={timetableQuery.isError}
                                    timetable={timetable}
                                    selectedSchool={selectedSchool}
+                                   teacherModeEnabled={teacherModeEnabled}
                                    setSelectedSchoolCallback={handleSelectedSchoolChange}
+                                   setTeacherModeEnabledCallback={handleTeacherModeEnabledChange}
                                    selectedClassId={selectedClassId}
+                                   selectedTeacherId={selectedTeacherId}
                                    selectedGroupIds={selectedGroupIds}
                                    setSelectedClassIdCallback={handleSelectedClassIdChange}
+                                   setSelectedTeacherIdCallback={handleSelectedTeacherIdChange}
                                    setSelectedGroupIdsCallback={handleSelectedGroupIdsChange}/>,
         },
-    ]), [timetable, timetableQuery, selectedSchool, handleSelectedSchoolChange, selectedClassId, selectedGroupIds,
-        handleSelectedClassIdChange, handleSelectedGroupIdsChange]);
+    ]), [timetable, timetableQuery, teacherModeEnabled, selectedSchool, handleSelectedSchoolChange,
+        handleTeacherModeEnabledChange, selectedClassId, selectedTeacherId, selectedGroupIds,
+        handleSelectedClassIdChange, handleSelectedTeacherIdChange, handleSelectedGroupIdsChange]);
 
     return (
         <div className="h-100">

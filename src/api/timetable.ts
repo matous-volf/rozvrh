@@ -8,11 +8,15 @@ import HourTime from "../models/HourTime.ts";
 import {DateTime} from "luxon";
 import Group from "../models/Group.ts";
 import School from "../models/School.ts";
+import Teacher from "../models/Teacher.ts";
 
 const timetableBlankPermanentUrl = "Timetable/Public";
 
 const timetableClassPermanentBaseUrl = "Timetable/Public/Permanent/Class/";
 const timetableClassCurrentBaseUrl = "Timetable/Public/Actual/Class/";
+
+const timetableTeacherPermanentBaseUrl = "Timetable/Public/Permanent/Teacher/";
+const timetableTeacherCurrentBaseUrl = "Timetable/Public/Actual/Teacher/";
 
 async function fetchHtml(url: string) {
     const response = await fetch(url);
@@ -49,15 +53,54 @@ export async function getClassIds(school: School): Promise<ClassId[]> {
     return classIds;
 }
 
-export async function getTimetable(school: School, classId: string, selectedGroupIds: string[]): Promise<Timetable> {
+export async function getTeachers(school: School): Promise<Teacher[]> {
+    const html = await fetchHtml(new URL(timetableBlankPermanentUrl, school.url).toString());
+    const $ = cheerio.load(html);
+
+    const teachers: Teacher[] = [];
+
+    try {
+        const classSelect = $("#selectedTeacher")[0];
+        for (const option of classSelect.children) {
+            const id = $(option).attr("value");
+            const name = $(option).text();
+
+            if (id === undefined || name.trim() === "") {
+                continue;
+            }
+
+            teachers.push(new Teacher(id, name));
+        }
+    } catch (e) {
+        throw new Error();
+    }
+
+    return teachers;
+}
+
+export async function getTimetableClass(school: School, classId: string, selectedGroupIds: string[]) {
     const permanentUrl = new URL(timetableClassPermanentBaseUrl + classId, school.url).toString();
     const currentUrl = new URL(timetableClassCurrentBaseUrl + classId, school.url).toString();
 
+    return await getTimetable(permanentUrl, currentUrl, selectedGroupIds);
+}
+
+export async function getTimetableTeacher(school: School, teacherId: string) {
+    const permanentUrl = new URL(timetableTeacherPermanentBaseUrl + teacherId, school.url).toString();
+    const currentUrl = new URL(timetableTeacherCurrentBaseUrl + teacherId, school.url).toString();
+
+    return await getTimetable(permanentUrl, currentUrl, [], true);
+}
+
+async function getTimetable(permanentUrl: string,
+                            currentUrl: string,
+                            selectedGroupIds: string[],
+                            selectAllGroups: boolean = false): Promise<Timetable> {
     const permanentHtml = await fetchHtml(permanentUrl);
     const currentHtml = await fetchHtml(currentUrl);
 
-    const daysPermanent = createDays(permanentHtml, selectedGroupIds);
-    const daysCurrent = createDays(currentHtml, selectedGroupIds);
+    const daysPermanent = createDays(permanentHtml, selectedGroupIds, selectAllGroups);
+    const daysCurrent = createDays(currentHtml, selectedGroupIds, selectAllGroups);
 
     const groupGroups: Group[][] = [];
 
@@ -117,7 +160,7 @@ export async function getTimetable(school: School, classId: string, selectedGrou
     return new Timetable(daysCurrent, groupGroups, hourTimes);
 }
 
-function createDays(html: string, selectedGroupIds: string[]): Day[] {
+function createDays(html: string, selectedGroupIds: string[], selectAllGroups: boolean): Day[] {
     const $ = cheerio.load(html);
 
     const days: Day[] = [];
@@ -129,16 +172,19 @@ function createDays(html: string, selectedGroupIds: string[]): Day[] {
         for (const cell of cells) {
             const lessons: Lesson[] = [];
 
-            const dayItems = $(cell).find(".day-item > .day-item-hover > .day-flex");
-            for (const dayItem of dayItems) {
-                const subject = $(dayItem).find(".middle").text().trim();
+            const dayItemHovers = $(cell).find(".day-item > .day-item-hover");
+            for (const dayItemHover of dayItemHovers) {
+                const dayItem = $(dayItemHover).find(".day-flex");
 
-                if (subject === "") {
+                const middle = dayItem.find(".middle");
+                const subject = middle.text().trim();
+
+                if (subject === "" || middle.prop("style")?.visibility === "hidden") {
                     continue;
                 }
 
-                const groupName = $(dayItem).find(".top > .left > div").text().trim();
-                const group = new Group(groupName, groupName, false);
+                const groupName = (JSON.parse($(dayItemHover).prop("data-detail")).group as string).trim();
+                const group = new Group(groupName, groupName === "" ? null : groupName, false);
                 const room = $(dayItem).find(".top > .right > div").text().trim();
                 const teacher = $(dayItem).find(".bottom > span").text().trim();
 
@@ -149,11 +195,11 @@ function createDays(html: string, selectedGroupIds: string[]): Day[] {
                     weekId = subject.split(": ")[0];
                 }
 
-                lessons.push(new Lesson(subject, group.name !== "" ? group : null, room, teacher, isNotEveryWeek, weekId));
+                lessons.push(new Lesson(subject, group.name === null ? null : group, room, teacher, isNotEveryWeek, weekId));
             }
 
             const selectedLesson = lessons.find((lesson) =>
-                lesson.group === null || selectedGroupIds.includes(lesson.group.id));
+                selectAllGroups || lesson.group === null || selectedGroupIds.includes(lesson.group.id));
 
             hours.push(new Hour(lessons, selectedLesson !== undefined ? selectedLesson : null));
         }
