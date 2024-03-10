@@ -5,6 +5,7 @@ import HourTime from "../models/HourTime.ts";
 import Hour from "../models/Hour.ts";
 
 interface Props {
+    teacherModeEnabled: boolean;
     currentTime: DateTime;
     hourTimes: HourTime[];
     hours: Hour[];
@@ -66,13 +67,9 @@ function Lessons(props: Props) {
     return (
         <div className="d-flex flex-column justify-content-center align-items-center">
             <div>
-                <p>
-                    <LessonInfo isBreak={isBreak} lesson={currentLesson}/>
-                </p>
+                <LessonInfo teacherModeEnabled={props.teacherModeEnabled} isBreak={isBreak} lesson={currentLesson}/>
                 <hr/>
-                <p>
-                    <LessonInfo isBreak={false} lesson={nextLesson}/>
-                </p>
+                <LessonInfo teacherModeEnabled={props.teacherModeEnabled} isBreak={false} lesson={nextLesson}/>
             </div>
         </div>
     );

@@ -66,7 +66,7 @@ function GroupSettings(props: Props) {
 
     return (
         <>
-            <h2>Skupiny</h2>
+            <h3>Skupiny</h3>
             <p>Své skupiny najdete v rozvrhu aplikace Bakaláři.</p>
 
             {(props.isTimetableQueryLoading ? (<p>Načítání...</p>

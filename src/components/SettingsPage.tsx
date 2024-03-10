@@ -6,16 +6,22 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 import School from "../models/School.ts";
 import SchoolSettings from "./SchoolSettings.tsx";
+import TeacherModeSettings from "./TeacherModeSettings.tsx";
+import TeacherSettings from "./TeacherSettings.tsx";
 
 interface Props {
     isTimetableQueryLoading: boolean;
     isTimetableQueryError: boolean;
     timetable: Timetable | null;
     selectedSchool: School | null;
+    teacherModeEnabled: boolean;
     setSelectedSchoolCallback: (school: School | null) => void;
+    setTeacherModeEnabledCallback: (teacherModeEnabled: boolean) => void;
     selectedClassId: string | null;
+    selectedTeacherId: string | null;
     selectedGroupIds: string[];
     setSelectedClassIdCallback: (classId: string | null) => void;
+    setSelectedTeacherIdCallback: (teacherId: string | null) => void;
     setSelectedGroupIdsCallback: (groupIds: string[]) => void;
 }
 
@@ -30,21 +36,26 @@ function SettingsPage(props: Props) {
 
     return (
         <div className="container d-flex flex-column align-items-start gap-3 p-4" style={{maxWidth: "576px"}}>
-            <h1>Nastavení</h1>
+            <h2>Nastavení</h2>
             <div className="w-100">
                 <SchoolSettings {...props}/>
             </div>
-            <div className="w-100">
+            <div>
                 {props.selectedSchool !== null &&
-                    <ClassSettings {...props} selectedSchool={props.selectedSchool}/>}
+                    <TeacherModeSettings {...props}/>}
             </div>
             <div>
-                {props.selectedClassId !== null &&
+                {props.selectedSchool !== null && (!props.teacherModeEnabled ?
+                    <ClassSettings {...props} selectedSchool={props.selectedSchool}/> :
+                    <TeacherSettings {...props} selectedSchool={props.selectedSchool}/>)}
+            </div>
+            <div>
+                {!props.teacherModeEnabled && props.selectedClassId !== null &&
                     <GroupSettings {...props} timetable={props.timetable}
                                    setSelectedGroupIdsCallback={setSelectedGroupIds}/>}
             </div>
             <Link to="/">
-                <Button onClick={handleSave} variant="outline-secondary">
+                <Button onClick={handleSave} variant="primary">
                     <i className="bi bi-check-lg"></i> uložit
                 </Button>
             </Link>
