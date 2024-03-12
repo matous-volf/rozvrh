@@ -9,6 +9,13 @@ RUN npm install
 
 RUN npm run build
 
+RUN apt update \
+  && apt install -y brotli \
+  && apt clean \
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+RUN find dist/ \( -name "*.js" -o -name "*.css" -o -name "*.html" \) -exec brotli -6 -o {}.br {} \;
+
 FROM ubuntu:22.04 as builder_nginx
 
 RUN apt update \
@@ -23,7 +30,6 @@ RUN cd nginx-1.25.3 && ./configure --with-compat --add-dynamic-module=../ngx_bro
 
 FROM nginx:1.25.3
 COPY --from=builder_nginx /app/nginx-1.25.3/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
-COPY --from=builder_nginx /app/nginx-1.25.3/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
 
 COPY ./docker/web-server-prod/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/web-server-prod/default.conf /etc/nginx/conf.d/default.conf
