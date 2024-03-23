@@ -38,12 +38,12 @@ function TimetableInfo(props: Props) {
 
     return (
         <div className="d-flex flex-column gap-4">
-            <p className="display-1 fw-bold" style={{fontSize:"14vw"}}>
+            <p className="display-1 fw-bold" style={{ fontSize: "14vw" }}>
                 <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
                     firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex} />
             </p>
             <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime} hourTimes={props.timetable.hourTimes}
-                     hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
+                hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex} />
         </div>
     );
 }
