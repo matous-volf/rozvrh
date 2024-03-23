@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {DateTime} from "luxon";
+import { useEffect, useState } from "react";
+import { DateTime } from "luxon";
 import Timetable from "../models/Timetable.ts";
 import TimeRemaining from "./TimeRemaining.tsx";
 import Lessons from "./Lessons.tsx";
@@ -28,19 +28,19 @@ function TimetableInfo(props: Props) {
     const lastHourIndex = hours === undefined ? -1 :
         hours.length - [...hours].reverse().findIndex((hour) => hour.isSelected) - 1; // the last selected index
 
-    if (firstHourIndex === -1 || lastHourIndex === -1 || hours === undefined) {
-        return (
-            <>
-                <p>Dnes není žádné vyučování.</p>
-            </>
-        )
-    }
+    // if (firstHourIndex === -1 || lastHourIndex === -1 || hours === undefined) {
+    //     return (
+    //         <>
+    //             <p>Dnes není žádné vyučování.</p>
+    //         </>
+    //     )
+    // }
 
     return (
         <div className="d-flex flex-column gap-4">
-            <p className="display-1 fw-bold">
+            <p className="display-1 fw-bold" style={{fontSize:"14vw"}}>
                 <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
-                               firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
+                    firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex} />
             </p>
             <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime} hourTimes={props.timetable.hourTimes}
                      hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
