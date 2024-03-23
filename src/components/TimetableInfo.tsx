@@ -28,13 +28,13 @@ function TimetableInfo(props: Props) {
     const lastHourIndex = hours === undefined ? -1 :
         hours.length - [...hours].reverse().findIndex((hour) => hour.isSelected) - 1; // the last selected index
 
-    // if (firstHourIndex === -1 || lastHourIndex === -1 || hours === undefined) {
-    //     return (
-    //         <>
-    //             <p>Dnes není žádné vyučování.</p>
-    //         </>
-    //     )
-    // }
+    if (firstHourIndex === -1 || lastHourIndex === -1 || hours === undefined) {
+        return (
+            <>
+                <p>Dnes není žádné vyučování.</p>
+            </>
+        )
+    }
 
     return (
         <div className="d-flex flex-column gap-4">
