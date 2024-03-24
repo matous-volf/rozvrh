@@ -1,8 +1,8 @@
-import { Button } from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import TimetableInfo from "./TimetableInfo.tsx";
 import Timetable from "../models/Timetable.ts";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import {Link} from "react-router-dom";
+import {useEffect} from "react";
 import NoSleep from 'nosleep.js';
 
 interface Props {
@@ -35,7 +35,7 @@ function MainPage(props: Props) {
                     props.isQueryLoading ? (<p>Načítání...</p>
                     ) : props.isQueryError ? (<p>Rozvrh se nepodařilo načíst.</p>
                     ) : props.timetable === null ? (<p>Zvolte školu, třídu a skupiny nebo učitele v nastavení.</p>
-                    ) : <TimetableInfo {...props} timetable={props.timetable} />
+                    ) : <TimetableInfo {...props} timetable={props.timetable}/>
                 }
             </div>
             <Button variant="outline-secondary" href="https://github.com/matous-volf/rozvrh" target="_blank">

@@ -1,6 +1,6 @@
 import LessonInfo from "./LessonInfo.tsx";
 import Lesson from "../models/Lesson.ts";
-import { DateTime } from "luxon";
+import {DateTime} from "luxon";
 import HourTime from "../models/HourTime.ts";
 import Hour from "../models/Hour.ts";
 
@@ -68,9 +68,9 @@ function Lessons(props: Props) {
         <div className="d-flex flex-column justify-content-center align-items-center"
              style={{fontSize: "calc(1rem + 2vw)"}}>
             <div>
-                <LessonInfo teacherModeEnabled={props.teacherModeEnabled} isBreak={isBreak} lesson={currentLesson} />
-                <hr />
-                <LessonInfo teacherModeEnabled={props.teacherModeEnabled} isBreak={false} lesson={nextLesson} />
+                <LessonInfo teacherModeEnabled={props.teacherModeEnabled} isBreak={isBreak} lesson={currentLesson}/>
+                <hr/>
+                <LessonInfo teacherModeEnabled={props.teacherModeEnabled} isBreak={false} lesson={nextLesson}/>
             </div>
         </div>
     );
