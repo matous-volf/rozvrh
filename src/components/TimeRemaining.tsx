@@ -46,7 +46,7 @@ function TimeRemaining(props: Props) {
 
     return (
         <>
-            {timeRemaining === null ? "Vyučování skončilo." : timeRemaining.toFormat("mm:ss")}
+            {timeRemaining === null ? "00:00" : timeRemaining.toFormat("mm:ss")}
         </>
     );
 }
