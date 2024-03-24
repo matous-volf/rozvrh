@@ -65,7 +65,8 @@ function Lessons(props: Props) {
     }
 
     return (
-        <div className="d-flex flex-column justify-content-center align-items-center" style={{ fontSize: "3vw" }}>
+        <div className="d-flex flex-column justify-content-center align-items-center"
+             style={{fontSize: "calc(1rem + 2vw)"}}>
             <div>
                 <LessonInfo teacherModeEnabled={props.teacherModeEnabled} isBreak={isBreak} lesson={currentLesson} />
                 <hr />
