@@ -37,12 +37,13 @@ function TimetableInfo(props: Props) {
     }
 
     return (
-        <div className="d-flex flex-column gap-4">
-            <p className="display-1 fw-bold">
+        <div className="d-flex flex-column gap-5">
+            <p className="fw-bold" style={{fontSize: "calc(1rem + 13vw)", marginBottom: "-0.3em"}}>
                 <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
                                firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
             </p>
-            <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime} hourTimes={props.timetable.hourTimes}
+            <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime}
+                     hourTimes={props.timetable.hourTimes}
                      hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
         </div>
     );

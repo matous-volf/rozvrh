@@ -24,13 +24,13 @@ function MainPage(props: Props) {
     }, []);
 
     return (
-        <div className="h-100 d-flex flex-column justify-content-center align-items-center text-center p-5">
+        <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center text-center py-5">
             <Link to="/nastaveni">
                 <Button variant="outline-secondary">
                     <i className="bi bi-gear-fill"></i> nastavení
                 </Button>
             </Link>
-            <div className="flex-fill d-flex justify-content-center align-items-center">
+            <div className="flex-fill d-flex justify-content-center align-items-center pb-5">
                 {
                     props.isQueryLoading ? (<p>Načítání...</p>
                     ) : props.isQueryError ? (<p>Rozvrh se nepodařilo načíst.</p>
