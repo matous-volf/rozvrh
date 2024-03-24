@@ -94,7 +94,7 @@ function App() {
         handleSelectedClassIdChange, handleSelectedTeacherIdChange, handleSelectedGroupIdsChange]);
 
     return (
-        <div className="h-100">
+        <div className="min-vh-100">
             <RouterProvider router={router}/>
         </div>
     );
