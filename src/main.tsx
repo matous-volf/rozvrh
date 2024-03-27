@@ -10,7 +10,13 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import {Settings} from "luxon";
 
 Settings.defaultZone = "Europe/Prague";
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+        },
+    },
+});
 ReactGA.initialize("G-60HTHGY4JH");
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
