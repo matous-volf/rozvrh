@@ -13,7 +13,8 @@ Settings.defaultZone = "Europe/Prague";
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            refetchOnWindowFocus: false,
+            staleTime: 15 * 60 * 1000,
+            refetchInterval: 15 * 60 * 1000
         },
     },
 });
