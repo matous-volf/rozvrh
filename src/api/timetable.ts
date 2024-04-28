@@ -157,7 +157,7 @@ async function getTimetable(permanentUrl: string,
 
     const hourTimes = createHourTimes(currentHtml);
 
-    return new Timetable(daysCurrent, groupGroups, hourTimes);
+    return new Timetable(daysCurrent, groupGroups, hourTimes, currentUrl);
 }
 
 function createDays(html: string, selectedGroupIds: string[], selectAllGroups: boolean): Day[] {
