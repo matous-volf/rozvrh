@@ -39,7 +39,7 @@ function MainPage(props: Props) {
                 </Button>
             </InputGroup>
 
-            <div className="flex-fill d-flex justify-content-center align-items-center">
+            <div className="flex-fill d-flex justify-content-center align-items-center pb-5">
                 {
                     props.isQueryLoading ? (<p>Načítání...</p>
                     ) : props.isQueryError ? (<p>Rozvrh se nepodařilo načíst.</p>
