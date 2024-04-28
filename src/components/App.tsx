@@ -72,6 +72,7 @@ function App() {
             path: "/",
             element: <MainPage teacherModeEnabled={teacherModeEnabled}
                                timetable={timetable}
+                               selectedSchool={selectedSchool}
                                isQueryLoading={timetableQuery.isLoading}
                                isQueryError={timetableQuery.isError}/>,
         },

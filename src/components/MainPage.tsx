@@ -1,18 +1,23 @@
-import {Button} from "react-bootstrap";
+import {Button, InputGroup} from "react-bootstrap";
 import TimetableInfo from "./TimetableInfo.tsx";
 import Timetable from "../models/Timetable.ts";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import WholeTimetableLink from "./WholeTimetableLink.tsx";
+import School from "../models/School.ts";
 import NoSleep from "nosleep.js";
 
 interface Props {
     teacherModeEnabled: boolean;
+    timetable: Timetable | null;
+    selectedSchool: School | null;
     isQueryLoading: boolean;
     isQueryError: boolean;
-    timetable: Timetable | null;
 }
 
 function MainPage(props: Props) {
+    const navigate = useNavigate();
+
     document.title = "Rozvrh";
 
     useEffect(() => {
@@ -25,12 +30,16 @@ function MainPage(props: Props) {
 
     return (
         <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center text-center py-5">
-            <Link to="/nastaveni">
-                <Button variant="outline-primary">
+            <InputGroup className="w-auto">
+                <Button variant="outline-secondary" onClick={() => navigate("/nastaveni")}>
                     <i className="bi bi-gear-fill"></i> nastavení
                 </Button>
-            </Link>
-            <div className="flex-fill d-flex justify-content-center align-items-center pb-5">
+                <Button variant="outline-secondary" href="https://github.com/matous-volf/rozvrh" target="_blank">
+                    <i className="bi bi-github"></i> GitHub
+                </Button>
+            </InputGroup>
+
+            <div className="flex-fill d-flex justify-content-center align-items-center">
                 {
                     props.isQueryLoading ? (<p>Načítání...</p>
                     ) : props.isQueryError ? (<p>Rozvrh se nepodařilo načíst.</p>
@@ -38,9 +47,9 @@ function MainPage(props: Props) {
                     ) : <TimetableInfo {...props} timetable={props.timetable}/>
                 }
             </div>
-            <Button variant="outline-secondary" href="https://github.com/matous-volf/rozvrh" target="_blank">
-                <i className="bi bi-github"></i> GitHub
-            </Button>
+
+            {props.timetable !== null &&
+                <WholeTimetableLink timetable={props.timetable} selectedSchool={props.selectedSchool!}/>}
         </div>
     );
 }
