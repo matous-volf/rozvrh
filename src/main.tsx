@@ -5,8 +5,8 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import ReactGA from "react-ga4";
 import "./css/style.css";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css'
+import "./css/bootstrap-custom.scss";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import {Settings} from "luxon";
 
 Settings.defaultZone = "Europe/Prague";
