@@ -183,7 +183,8 @@ function createDays(html: string, selectedGroupIds: string[], selectAllGroups: b
                     continue;
                 }
 
-                const groupName = (JSON.parse($(dayItemHover).prop("data-detail")).group as string).trim();
+                const dataDetailGroup = JSON.parse($(dayItemHover).prop("data-detail")).group as string | undefined;
+                const groupName = dataDetailGroup === undefined ? "" : dataDetailGroup.trim();
                 const group = new Group(groupName, groupName === "" ? null : groupName, false);
                 const room = $(dayItem).find(".top > .right > div").text().trim();
                 const teacher = $(dayItem).find(".bottom > span").text().trim();
