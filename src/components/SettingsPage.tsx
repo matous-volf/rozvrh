@@ -10,6 +10,7 @@ import TeacherModeSettings from "./TeacherModeSettings.tsx";
 import TeacherSettings from "./TeacherSettings.tsx";
 import TernaryDarkMode from "../models/TernaryDarkMode.ts";
 import ColorSchemeSettings from "./ColorSchemeSettings.tsx";
+import ProgressBarSettings from "./ProgressBarSettings.tsx";
 
 interface Props {
     isTimetableQueryLoading: boolean;
@@ -42,6 +43,9 @@ function SettingsPage(props: Props) {
         <h2>Nastavení</h2>
         <div>
             <ColorSchemeSettings {...props}/>
+        </div>
+        <div>
+            <ProgressBarSettings/>
         </div>
         <div className="w-100">
             <SchoolSettings {...props}/>
