@@ -12,7 +12,7 @@ stránkách školy.
 ## Přispěvatelé
 
 - [Logo aplikace](/public/assets/images/favicon-apple.png) vytvořil [Štěpán D.](https://stepandudycha.cz)
-- [Logo Delta timetable](/public/assets/images/delta-timetable-logo.svg)
+- [Logo Delta timetable](/src/assets/images/delta-timetable-logo.svg)
   vytvořila [@terilkaa](https://github.com/terilkaa).
 - [Různá vylepšení](https://github.com/matous-volf/rozvrh/graphs/contributors)
   přinesli [@AdamJedl](https://github.com/AdamJedl) a [@bekucera](https://github.com/bekucera).
