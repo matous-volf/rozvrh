@@ -56,7 +56,7 @@ function TimeRemaining(props: Props) {
     return <>
         <p className="fw-bold"
            style={{
-               fontFamily: "IBM Plex Sans",
+               fontFamily: "Familjen Grotesk, sans-serif",
                fontWeight: 700,
                fontSize: "calc(1rem + 12vw)",
                marginBottom: "-0.3em"
