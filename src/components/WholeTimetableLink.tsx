@@ -1,5 +1,5 @@
 import Timetable from "../models/Timetable.ts";
-import deltaTimetableLogo from '../../public/assets/images/delta-timetable-logo.svg';
+import deltaTimetableLogo from '../assets/images/delta-timetable-logo.svg';
 import School from "../models/School.ts";
 import {Link} from "react-router-dom";
 

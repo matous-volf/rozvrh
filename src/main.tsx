@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client"
 import App from "./components/App.tsx"
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import ReactGA from "react-ga4";
-import "./css/style.css";
+import "./assets/css/style.css";
 
-import "./css/bootstrap-custom.scss";
+import "./assets/css/bootstrap-custom.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import {Settings} from "luxon";
 

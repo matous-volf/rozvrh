@@ -20,7 +20,9 @@ function TimeRemaining(props: Props) {
     let previousAwaitedTime = DateTime.now().startOf("day");
     for (let i = props.firstHourIndex; i <= props.lastHourIndex; i++) {
         if (props.currentTime > props.hourTimes[i].end) {
-            previousAwaitedTime = props.hourTimes[i].end;
+            if (props.hours[i].isSelected) {
+                previousAwaitedTime = props.hourTimes[i].end;
+            }
             continue;
         }
 
@@ -52,7 +54,13 @@ function TimeRemaining(props: Props) {
     }, [timeRemaining]);
 
     return <>
-        <p className="fw-bold" style={{fontSize: "calc(1rem + 12vw)", marginBottom: "-0.3em"}}>
+        <p className="fw-bold"
+           style={{
+               fontFamily: "Familjen Grotesk, sans-serif",
+               fontWeight: 700,
+               fontSize: "calc(1rem + 12vw)",
+               marginBottom: "-0.3em"
+           }}>
             {timeRemaining === null ? "00:00" : <>{timeRemaining.toFormat("mm:ss")}</>}
         </p>
 
