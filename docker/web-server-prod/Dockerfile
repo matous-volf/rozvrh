@@ -1,18 +1,20 @@
 FROM node:20.5 as builder_app
 
-COPY ./ /srv/app/
-
 WORKDIR /srv/app/
-
-RUN npm install -g vite
-RUN npm install
-
-RUN npm run build
 
 RUN apt update \
   && apt install -y brotli \
   && apt clean \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+RUN npm install -g vite
+COPY ./package.json ./package.json
+COPY ./package-lock.json ./package-lock.json
+RUN npm install
+
+COPY ./ ./
+
+RUN npm run build
 
 RUN find dist/ \( -name "*.js" -o -name "*.css" -o -name "*.html" \) -exec brotli -6 -o {}.br {} \;
 
