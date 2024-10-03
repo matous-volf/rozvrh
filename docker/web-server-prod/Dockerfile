@@ -1,13 +1,12 @@
-FROM node:20.5 as builder_app
+FROM node:22.8.0-alpine3.20 AS builder_app
 
 WORKDIR /srv/app/
 
-RUN apt update \
-  && apt install -y brotli \
-  && apt clean \
-  && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN apk update \
+    && apk upgrade --no-cache \
+    && apk add --no-cache brotli \
+    && rm -rf /var/cache/apk/*
 
-RUN npm install -g vite
 COPY ./package.json ./package.json
 COPY ./package-lock.json ./package-lock.json
 RUN npm install
@@ -18,7 +17,7 @@ RUN npm run build
 
 RUN find dist/ \( -name "*.js" -o -name "*.css" -o -name "*.html" \) -exec brotli -6 -o {}.br {} \;
 
-FROM ubuntu:22.04 as builder_nginx
+FROM ubuntu:24.04 AS builder_nginx
 
 RUN apt update \
     && apt upgrade -y \
