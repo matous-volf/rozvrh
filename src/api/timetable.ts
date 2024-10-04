@@ -46,7 +46,7 @@ export async function getClassIds(school: School): Promise<ClassId[]> {
 
             classIds.push(new ClassId(id, name));
         }
-    } catch (e) {
+    } catch {
         throw new Error();
     }
 
@@ -71,7 +71,7 @@ export async function getTeachers(school: School): Promise<Teacher[]> {
 
             teachers.push(new Teacher(id, name));
         }
-    } catch (e) {
+    } catch {
         throw new Error();
     }
 
