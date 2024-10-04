@@ -6,5 +6,6 @@ services:
     ports:
       - "8000:8000"
     volumes:
+      - /srv/app/node_modules
       - ./:/srv/app
     tty: true

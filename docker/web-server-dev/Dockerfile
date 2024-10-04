@@ -1,9 +1,10 @@
 FROM node:22.8.0-alpine3.20
 
-COPY ./ /srv/app/
-
 WORKDIR /srv/app/
 
+COPY package.json package-lock.json ./
 RUN npm install
+
+COPY . .
 
 CMD ["npm", "run", "dev"]
