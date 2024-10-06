@@ -4,6 +4,7 @@ interface Props {
     teacherModeEnabled: boolean;
     lesson: Lesson | null;
     isBreak: boolean;
+    isLongerBreak: boolean;
 }
 
 function LessonInfo(props: Props) {
@@ -11,6 +12,8 @@ function LessonInfo(props: Props) {
 
     if (props.isBreak) {
         content = <span className="fw-bold">přestávka</span>;
+    } else if (props.isLongerBreak) {
+        content = <span className="fw-bold">pauza</span>;
     } else if (props.lesson === null) {
         content = <span className="fw-bold">volno</span>;
     } else {
