@@ -21,7 +21,7 @@ interface PropsLessonInfo {
 function generateFilteredLessonInfos(
     arr: PropsLessonInfo[],
     isFirstSelectedLesson: boolean,
-    isLastSelectedLesson: boolean,
+    lastSelectedLesson: number,
     teacherModeEnabled: boolean,
     numberOfShownHours: number
 ) {
@@ -43,7 +43,7 @@ function generateFilteredLessonInfos(
                 isBreak={arr[index].isBreak}
                 isLongerBreak={
                     arr[index].lesson === null &&
-                    (index !== arr.length - 1 || !isLastSelectedLesson) &&
+                    (index !== arr.length - 1 || index < lastSelectedLesson) &&
                     (index !== 0 || !isFirstSelectedLesson)
                 }
                 key={index * 2}
@@ -99,7 +99,7 @@ function Lessons(props: Props) {
     let LessonInfosElements = generateFilteredLessonInfos(
         LessonInfos,
         currentHourIndex < props.firstHourIndex,
-        currentHourIndex >= props.lastHourIndex,
+        props.lastHourIndex - currentHourIndex,
         props.teacherModeEnabled,
         numberOfShownHours
     );
