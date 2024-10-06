@@ -10,10 +10,10 @@ interface Props {
 function LessonInfo(props: Props) {
     let content;
 
-    if (props.isBreak) {
-        content = <span className="fw-bold">přestávka</span>;
-    } else if (props.isLongerBreak) {
+    if (props.isLongerBreak) {
         content = <span className="fw-bold">pauza</span>;
+    } else if (props.isBreak) {
+        content = <span className="fw-bold">přestávka</span>;
     } else if (props.lesson === null) {
         content = <span className="fw-bold">volno</span>;
     } else {
