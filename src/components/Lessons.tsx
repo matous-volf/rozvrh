@@ -57,7 +57,6 @@ function generateFilteredLessonInfos(
 
 function Lessons(props: Props) {
     let currentHourIndex: number = -1;
-    let currentHourIsNull = false;
     let isBreak = false;
 
     const numberOfShownHours = 2;
@@ -71,8 +70,6 @@ function Lessons(props: Props) {
         if (props.currentTime < props.hourTimes[i].start) {
             if (i > props.firstHourIndex) {
                 isBreak = true;
-            } else {
-                currentHourIsNull = true;
             }
             currentHourIndex--;
         }
@@ -83,10 +80,7 @@ function Lessons(props: Props) {
     for (let index = currentHourIndex; index < props.hours.length; index++) {
         let lesson: Lesson | null = null;
 
-        if (
-            index !== currentHourIndex ||
-            (!currentHourIsNull && index !== -1)
-        ) {
+        if (index !== -1) {
             lesson = props.hours[index].selectedLesson;
         }
 
