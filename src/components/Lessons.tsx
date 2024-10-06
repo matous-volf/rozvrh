@@ -4,6 +4,7 @@ import {DateTime} from "luxon";
 import HourTime from "../models/HourTime.ts";
 import Hour from "../models/Hour.ts";
 import {ReactElement} from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 interface Props {
     teacherModeEnabled: boolean;
@@ -60,7 +61,7 @@ function Lessons(props: Props) {
     let currentHourIndex = -1;
     let isBreak = false;
 
-    const shownHoursCount = 2;
+    const [shownHoursCount] = useLocalStorage<number>("shownHoursCount", 2);
 
     for (let i = props.firstHourIndex; i <= props.lastHourIndex; i++) {
         if (props.currentTime > props.hourTimes[i].end) {
