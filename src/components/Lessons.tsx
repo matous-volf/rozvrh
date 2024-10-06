@@ -23,10 +23,13 @@ interface LessonInfoProps {
 function generateFilteredLessonInfos(
     lessonInfoProps: LessonInfoProps[],
     isFirstSelectedLesson: boolean,
-    lastSelectedLessonIndex: number,
     teacherModeEnabled: boolean,
     shownHoursCount: number
 ) {
+    // This is necessary to display "volno" after all lessons in case the last lesson is not null (not "volno").
+    if (lessonInfoProps[lessonInfoProps.length-1].lesson !== null) {
+       lessonInfoProps.push({lesson: null, isBreak: false});
+    }
     for (let index = lessonInfoProps.length - 1; index > 0; index--) {
         if (lessonInfoProps[index].lesson === null) {
             if (lessonInfoProps[index - 1].lesson === null) {
@@ -45,7 +48,7 @@ function generateFilteredLessonInfos(
                 isBreak={lessonInfoProps[index].isBreak}
                 isLongBreak={
                     lessonInfoProps[index].lesson === null &&
-                    (index !== lessonInfoProps.length - 1 || index < lastSelectedLessonIndex) &&
+                    index !== lessonInfoProps.length - 1 &&
                     (index !== 0 || !isFirstSelectedLesson)
                 }
                 key={index * 2}
@@ -102,7 +105,6 @@ function Lessons(props: Props) {
             {generateFilteredLessonInfos(
                 lessonInfoProps,
                 currentHourIndex < props.firstHourIndex,
-                props.lastHourIndex - currentHourIndex,
                 props.teacherModeEnabled,
                 shownHoursCount
             )}
