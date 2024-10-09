@@ -27,8 +27,8 @@ function generateFilteredLessonInfos(
     shownHoursCount: number
 ) {
     // This is necessary to display "volno" after all lessons in case the last lesson is not null (not "volno").
-    if (lessonInfoProps[lessonInfoProps.length-1].lesson !== null) {
-       lessonInfoProps.push({lesson: null, isBreak: false});
+    if (lessonInfoProps[lessonInfoProps.length - 1].lesson !== null) {
+        lessonInfoProps.push({lesson: null, isBreak: false});
     }
     for (let index = lessonInfoProps.length - 1; index > 0; index--) {
         if (lessonInfoProps[index].lesson === null) {
