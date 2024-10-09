@@ -4,7 +4,8 @@ import {DateTime} from "luxon";
 import HourTime from "../models/HourTime.ts";
 import Hour from "../models/Hour.ts";
 import {ReactElement} from "react";
-import { useLocalStorage } from "usehooks-ts";
+import {useLocalStorage} from "usehooks-ts";
+import {Indicate} from 'indicate'
 
 interface Props {
     teacherModeEnabled: boolean;
@@ -99,17 +100,21 @@ function Lessons(props: Props) {
         isBreak = false;
     }
 
-    return <div className="d-flex flex-column justify-content-center align-items-center"
-                style={{fontSize: "calc(1rem + 2vw)"}}>
-        <div>
-            {generateFilteredLessonInfos(
-                lessonInfoProps,
-                currentHourIndex < props.firstHourIndex,
-                props.teacherModeEnabled,
-                shownHoursCount
-            )}
+    return (
+        <div className="flex-column justify-content-center align-items-center">
+            <Indicate arrow={false} color="var(--bs-body-bg)" click={false} width="5rem"
+                      style={{maxHeight: "calc(35vh - 3vw)", fontSize: "calc(1rem + 2vw)"}}>
+                <div>
+                    {generateFilteredLessonInfos(
+                        lessonInfoProps,
+                        currentHourIndex < props.firstHourIndex,
+                        props.teacherModeEnabled,
+                        shownHoursCount
+                    )}
+                </div>
+            </Indicate>
         </div>
-    </div>
+    );
 }
 
 export default Lessons
