@@ -1,19 +1,15 @@
-import { ChangeEvent, useState } from "react";
-import { Form } from "react-bootstrap";
+import {ChangeEvent, useState} from "react";
+import {Form} from "react-bootstrap";
 
-const Slider = ({
-    min,
-    max,
-    step,
-    defaultValue,
-    onChange,
-}: {
+interface Props {
     min: number;
     max: number;
     step: number;
     defaultValue: number;
     onChange?: (value: number) => void;
-}) => {
+}
+
+function Slider({min, max, step, defaultValue, onChange}: Props) {
     const [value, setValue] = useState(defaultValue);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,19 +20,10 @@ const Slider = ({
         }
     };
 
-    return (
-        <div className="d-flex gap-2">
-            <Form.Range
-                className="flex-shrink-0"
-                min={min}
-                max={max}
-                step={step}
-                value={value}
-                onChange={handleChange}
-            />
-            {value}
-        </div>
-    );
-};
+    return <div className="d-flex gap-2">
+        <Form.Range min={min} max={max} step={step} value={value} onChange={handleChange}/>
+        <span className="text-end" style={{minWidth: `${1 + Math.floor(Math.log10(max)) / 1.75}rem`}}>{max}</span>
+    </div>
+}
 
 export default Slider;
