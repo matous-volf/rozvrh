@@ -4,6 +4,8 @@ import {DateTime} from "luxon";
 import HourTime from "../models/HourTime.ts";
 import Hour from "../models/Hour.ts";
 import {ReactElement} from "react";
+import {useLocalStorage} from "usehooks-ts";
+import {Indicate} from 'indicate'
 
 interface Props {
     teacherModeEnabled: boolean;
@@ -26,8 +28,8 @@ function generateFilteredLessonInfos(
     shownHoursCount: number
 ) {
     // This is necessary to display "volno" after all lessons in case the last lesson is not null (not "volno").
-    if (lessonInfoProps[lessonInfoProps.length-1].lesson !== null) {
-       lessonInfoProps.push({lesson: null, isBreak: false});
+    if (lessonInfoProps[lessonInfoProps.length - 1].lesson !== null) {
+        lessonInfoProps.push({lesson: null, isBreak: false});
     }
     for (let index = lessonInfoProps.length - 1; index > 0; index--) {
         if (lessonInfoProps[index].lesson === null) {
@@ -63,7 +65,7 @@ function Lessons(props: Props) {
     let currentHourIndex = -1;
     let isBreak = false;
 
-    const shownHoursCount = 2;
+    const [shownHoursCount] = useLocalStorage<number>("shownHoursCount", 2);
 
     for (let i = props.firstHourIndex; i <= props.lastHourIndex; i++) {
         if (props.currentTime > props.hourTimes[i].end) {
@@ -98,17 +100,21 @@ function Lessons(props: Props) {
         isBreak = false;
     }
 
-    return <div className="d-flex flex-column justify-content-center align-items-center"
-                style={{fontSize: "calc(1rem + 2vw)"}}>
-        <div>
-            {generateFilteredLessonInfos(
-                lessonInfoProps,
-                currentHourIndex < props.firstHourIndex,
-                props.teacherModeEnabled,
-                shownHoursCount
-            )}
+    return (
+        <div className="flex-column justify-content-center align-items-center">
+            <Indicate arrow={false} color="var(--bs-body-bg)" click={false} width="5rem"
+                      style={{maxHeight: "calc(35vh - 3vw)", fontSize: "calc(1rem + 2vw)"}}>
+                <div>
+                    {generateFilteredLessonInfos(
+                        lessonInfoProps,
+                        currentHourIndex < props.firstHourIndex,
+                        props.teacherModeEnabled,
+                        shownHoursCount
+                    )}
+                </div>
+            </Indicate>
         </div>
-    </div>
+    );
 }
 
 export default Lessons
