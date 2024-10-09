@@ -22,7 +22,7 @@ function Slider({min, max, step, defaultValue, onChange}: Props) {
 
     return <div className="d-flex gap-2">
         <Form.Range min={min} max={max} step={step} value={value} onChange={handleChange}/>
-        <span className="text-end" style={{minWidth: `${1 + Math.floor(Math.log10(max)) / 1.75}rem`}}>{max}</span>
+        <span className="text-end" style={{minWidth: `${1 + Math.floor(Math.log10(max)) / 1.75}rem`}}>{value}</span>
     </div>
 }
 
