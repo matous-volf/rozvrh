@@ -11,7 +11,7 @@ import TeacherSettings from "./TeacherSettings.tsx";
 import TernaryDarkMode from "../models/TernaryDarkMode.ts";
 import ColorSchemeSettings from "./ColorSchemeSettings.tsx";
 import ProgressBarSettings from "./ProgressBarSettings.tsx";
-import ShownHoursCountSettings from "./shownHoursCountSettings.tsx";
+import ShownHoursCountSettings from "./ShownHoursCountSettings.tsx";
 
 interface Props {
     isTimetableQueryLoading: boolean;
@@ -40,7 +40,7 @@ function SettingsPage(props: Props) {
 
     document.title = "Nastavení";
 
-    return <div className="container d-flex flex-column align-items-start gap-3 p-4" style={{maxWidth: "576px"}}>
+    return <div className="container d-flex flex-column align-content-stretch gap-3 p-4" style={{maxWidth: "576px"}}>
         <h2>Nastavení</h2>
         <div>
             <ColorSchemeSettings {...props}/>
@@ -51,7 +51,7 @@ function SettingsPage(props: Props) {
         <div>
             <ShownHoursCountSettings timetable={props.timetable}/>
         </div>
-        <div className="w-100">
+        <div>
             <SchoolSettings {...props}/>
         </div>
         <div>
