@@ -5,6 +5,7 @@ services:
       context: ./
     networks:
       - web-server-network
+    restart: always
 
 networks:
   web-server-network:
