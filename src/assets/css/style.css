@@ -17,3 +17,7 @@ input.rbt-input-hint {
 .btn:hover > .delta-timetable-logo {
     filter: none;
 }
+
+.hide-indicate-scrollbar ~ span {
+    pointer-events: none !important;
+}
