@@ -13,7 +13,7 @@ export default function TimetableInfo(props: Props) {
     const [currentTime, setCurrentTime] = useState(DateTime.now());
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setCurrentTime(DateTime.now().minus({hour: 10}));
+            setCurrentTime(DateTime.now());
         }, 100);
 
         return () => {
