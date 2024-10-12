@@ -1,4 +1,4 @@
-class ClassId {
+export default class ClassId {
     id: string;
     name: string;
     constructor(id: string, name: string) {
@@ -6,5 +6,3 @@ class ClassId {
         this.name = name;
     }
 }
-
-export default ClassId;

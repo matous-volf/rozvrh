@@ -1,7 +1,7 @@
 import {DateTime} from "luxon";
 
 
-class HourTime {
+export default class HourTime {
     start: DateTime;
     end: DateTime;
 
@@ -10,5 +10,3 @@ class HourTime {
         this.end = end;
     }
 }
-
-export default HourTime;

@@ -9,7 +9,7 @@ interface Props {
     timetable: Timetable;
 }
 
-function TimetableInfo(props: Props) {
+export default function TimetableInfo(props: Props) {
     const [currentTime, setCurrentTime] = useState(DateTime.now());
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -40,5 +40,3 @@ function TimetableInfo(props: Props) {
                  hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
     </div>
 }
-
-export default TimetableInfo

@@ -2,7 +2,7 @@ import Day from "./Day.ts";
 import HourTime from "./HourTime.ts";
 import Group from "./Group.ts";
 
-class Timetable {
+export default class Timetable {
     days: Day[];
     groupGroups: Group[][];
     hourTimes: HourTime[];
@@ -15,5 +15,3 @@ class Timetable {
         this.urlCurrent = urlCurrent;
     }
 }
-
-export default Timetable;

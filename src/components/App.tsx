@@ -8,7 +8,7 @@ import School from "../models/School.ts";
 import {useLocalStorage, useTernaryDarkMode} from "usehooks-ts";
 import TernaryDarkMode from "../models/TernaryDarkMode.ts";
 
-function App() {
+export default function App() {
     const {isDarkMode, ternaryDarkMode, setTernaryDarkMode} = useTernaryDarkMode({defaultValue: "system"});
     const [selectedSchool, setSelectedSchool] = useLocalStorage<School | null>("selectedSchool", null);
     const [teacherModeEnabled, setTeacherModeEnabled] = useLocalStorage<boolean>("teacherModeEnabled", false);
@@ -103,5 +103,3 @@ function App() {
         <RouterProvider router={router}/>
     </div>
 }
-
-export default App

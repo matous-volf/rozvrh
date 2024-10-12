@@ -1,6 +1,6 @@
 import Lesson from "./Lesson.ts";
 
-class Hour {
+export default class Hour {
     lessons: Lesson[];
     selectedLesson: Lesson | null;
     isSelected: boolean;
@@ -11,5 +11,3 @@ class Hour {
         this.isSelected = selectedLesson !== null;
     }
 }
-
-export default Hour;

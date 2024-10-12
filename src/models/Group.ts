@@ -1,4 +1,4 @@
-class Group {
+export default class Group {
     id: string;
     name: string | null;
     isBlank: boolean;
@@ -9,5 +9,3 @@ class Group {
         this.isBlank = isBlank;
     }
 }
-
-export default Group;

@@ -6,7 +6,7 @@ interface Props {
     setTernaryDarkModeCallback: (ternaryDarkMode: TernaryDarkMode) => void;
 }
 
-function ColorSchemeSettings(props: Props) {
+export default function ColorSchemeSettings(props: Props) {
     return <>
         <h3>Barevné schéma</h3>
         <FormCheck
@@ -46,5 +46,3 @@ function ColorSchemeSettings(props: Props) {
         />
     </>
 }
-
-export default ColorSchemeSettings;

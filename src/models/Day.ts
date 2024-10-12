@@ -1,11 +1,9 @@
 import Hour from "./Hour.ts";
 
-class Day {
+export default class Day {
     hours: Hour[];
 
     constructor(hours: Hour[]) {
         this.hours = hours;
     }
 }
-
-export default Day;

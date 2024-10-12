@@ -1,6 +1,6 @@
 import Group from "./Group.ts";
 
-class Lesson {
+export default class Lesson {
     subject: string;
     group: Group | null;
     room: string;
@@ -17,5 +17,3 @@ class Lesson {
         this.weekId = weekId;
     }
 }
-
-export default Lesson;

@@ -7,11 +7,9 @@ interface Props {
     timeRemaining: Duration | null;
 }
 
-function LessonProgressBar({currentTime, previousAwaitedTime, timeRemaining}: Props) {
+export default function LessonProgressBar({currentTime, previousAwaitedTime, timeRemaining}: Props) {
     return timeRemaining === null
         ? <ProgressBar max={1} now={1}/>
         : <ProgressBar max={currentTime.plus(timeRemaining).diff(previousAwaitedTime).toMillis()}
                        now={currentTime.diff(previousAwaitedTime).toMillis()}/>
 }
-
-export default LessonProgressBar;

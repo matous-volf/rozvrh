@@ -61,7 +61,7 @@ function generateFilteredLessonInfos(
     return lessonInfos;
 }
 
-function Lessons(props: Props) {
+export default function Lessons(props: Props) {
     let currentHourIndex = -1;
     let isBreak = false;
 
@@ -114,5 +114,3 @@ function Lessons(props: Props) {
         </Indicate>
     </div>
 }
-
-export default Lessons

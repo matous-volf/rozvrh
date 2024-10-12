@@ -10,7 +10,7 @@ interface Props {
     setSelectedSchoolCallback: (school: School | null) => void;
 }
 
-function SchoolSettings(props: Props) {
+export default function SchoolSettings(props: Props) {
     const [selectedSchool, setSelectedSchool] = useState<School | null>(props.selectedSchool);
 
     const setSelectedSchoolCallback = props.setSelectedSchoolCallback;
@@ -44,5 +44,3 @@ function SchoolSettings(props: Props) {
         }
     </>
 }
-
-export default SchoolSettings;

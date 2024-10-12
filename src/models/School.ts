@@ -1,4 +1,4 @@
-class School {
+export default class School {
     id: string;
     name: string;
     url: string;
@@ -9,5 +9,3 @@ class School {
         this.url = url;
     }
 }
-
-export default School;

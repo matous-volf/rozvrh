@@ -13,7 +13,7 @@ interface Props {
     lastHourIndex: number;
 }
 
-function TimeRemaining(props: Props) {
+export default function TimeRemaining(props: Props) {
     const [progressBarEnabled] = useLocalStorage<boolean>("progressBarEnabled", true);
 
     let hourIndex: number | null = null;
@@ -69,5 +69,3 @@ function TimeRemaining(props: Props) {
                                                   timeRemaining={timeRemaining}/>}
     </>
 }
-
-export default TimeRemaining

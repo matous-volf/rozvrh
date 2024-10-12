@@ -12,7 +12,7 @@ interface Props {
     setSelectedTeacherIdCallback: (teacherId: string | null) => void;
 }
 
-function TeacherSettings(props: Props) {
+export default function TeacherSettings(props: Props) {
     const [selectedTeacherId, setSelectedTeacherId] = useState<string | null>(props.selectedTeacherId);
 
     const setSelectedTeacherIdCallback = props.setSelectedTeacherIdCallback;
@@ -47,5 +47,3 @@ function TeacherSettings(props: Props) {
         }
     </>
 }
-
-export default TeacherSettings;

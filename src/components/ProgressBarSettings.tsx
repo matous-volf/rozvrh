@@ -1,7 +1,7 @@
 import {FormCheck} from "react-bootstrap";
 import {useLocalStorage} from "usehooks-ts";
 
-function ProgressBarSettings() {
+export default function ProgressBarSettings() {
     const [progressBarEnabled, setProgressBarEnabled] = useLocalStorage<boolean>("progressBarEnabled", true);
 
     return <>
@@ -14,5 +14,3 @@ function ProgressBarSettings() {
                    onChange={(e) => setProgressBarEnabled(!e.target.checked)} checked={!progressBarEnabled}/>
     </>
 }
-
-export default ProgressBarSettings;

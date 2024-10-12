@@ -7,7 +7,7 @@ interface Props {
     isLongBreak: boolean;
 }
 
-function LessonInfo(props: Props) {
+export default function LessonInfo(props: Props) {
     let content;
 
     if (props.isLongBreak) {
@@ -28,5 +28,3 @@ function LessonInfo(props: Props) {
         {content}
     </div>
 }
-
-export default LessonInfo

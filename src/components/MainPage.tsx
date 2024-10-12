@@ -15,7 +15,7 @@ interface Props {
     isQueryError: boolean;
 }
 
-function MainPage(props: Props) {
+export default function MainPage(props: Props) {
     const navigate = useNavigate();
 
     document.title = "Rozvrh";
@@ -51,5 +51,3 @@ function MainPage(props: Props) {
             <WholeTimetableLink timetable={props.timetable} selectedSchool={props.selectedSchool!}/>}
     </div>
 }
-
-export default MainPage

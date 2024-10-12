@@ -11,7 +11,7 @@ interface Props {
     setSelectedGroupIdsCallback: (groupIds: string[]) => void;
 }
 
-function GroupSettings(props: Props) {
+export default function GroupSettings(props: Props) {
     const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>(props.selectedGroupIds);
 
     useEffect(() => {
@@ -96,5 +96,3 @@ function GroupSettings(props: Props) {
         }
     </>
 }
-
-export default GroupSettings

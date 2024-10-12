@@ -6,7 +6,7 @@ interface Props {
     timetable: Timetable | null;
 }
 
-function ShownHoursCountSettings(props: Props) {
+export default function ShownHoursCountSettings(props: Props) {
     const [numberOfShownHours, setNumberOfShownHours] = useLocalStorage("shownHoursCount", 2);
 
     return <>
@@ -15,5 +15,3 @@ function ShownHoursCountSettings(props: Props) {
                 defaultValue={numberOfShownHours} onChange={setNumberOfShownHours}/>
     </>
 }
-
-export default ShownHoursCountSettings;
