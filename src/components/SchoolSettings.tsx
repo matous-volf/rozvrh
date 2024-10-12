@@ -31,20 +31,18 @@ function SchoolSettings(props: Props) {
         }
     }, [schools, isLoading]);
 
-    return (
-        <>
-            <h3>Škola</h3>
-            {(isLoading ? (<p>Načítání...</p>
-            ) : isError ? (<p>Školy se nepodařilo načíst.</p>
-            ) : <Typeahead style={{maxWidth: "100%"}} options={schools} labelKey="name"
-                           onChange={(selected) => setSelectedSchool(selected.length < 1 ? null : selected[0] as School)}
-                           selected={selectedSchool === null ? [] : [selectedSchool as Option]}
-                           id="input-school" emptyLabel="Nebyla nalezena žádná škola."
-                           paginationText="zobrazit další výsledky" highlightOnlyResult={true}
-                           placeholder="Zadejte název školy."/>)
-            }
-        </>
-    );
+    return <>
+        <h3>Škola</h3>
+        {isLoading ? (<p>Načítání...</p>
+        ) : isError ? (<p>Školy se nepodařilo načíst.</p>
+        ) : <Typeahead style={{maxWidth: "100%"}} options={schools} labelKey="name"
+                       onChange={(selected) => setSelectedSchool(selected.length < 1 ? null : selected[0] as School)}
+                       selected={selectedSchool === null ? [] : [selectedSchool as Option]}
+                       id="input-school" emptyLabel="Nebyla nalezena žádná škola."
+                       paginationText="zobrazit další výsledky" highlightOnlyResult={true}
+                       placeholder="Zadejte název školy."/>
+        }
+    </>
 }
 
 export default SchoolSettings;

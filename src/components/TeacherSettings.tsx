@@ -33,21 +33,19 @@ function TeacherSettings(props: Props) {
         }
     }, [teachers, isLoading]);
 
-    return (
-        <>
-            <h3>Učitel</h3>
-            {(isLoading ? (<p>Načítání...</p>
-            ) : isError ? (<p>Učitele se nepodařilo načíst. Škola pravděpodobně nepovolila veřejný rozvrh.</p>
-            ) : <FormSelect onChange={(e) => setSelectedTeacherId(e.target.value)} value={selectedTeacherId ?? ""}
-                            id="input-teacher" className="w-auto">
-                {selectedTeacherId === null && <option></option>}
-                {teachers.map((teacher) => (
-                    <option key={nanoid()} value={teacher.id}>{teacher.name}</option>
-                ))}
-            </FormSelect>)
-            }
-        </>
-    );
+    return <>
+        <h3>Učitel</h3>
+        {(isLoading ? (<p>Načítání...</p>
+        ) : isError ? (<p>Učitele se nepodařilo načíst. Škola pravděpodobně nepovolila veřejný rozvrh.</p>
+        ) : <FormSelect onChange={(e) => setSelectedTeacherId(e.target.value)} value={selectedTeacherId ?? ""}
+                        id="input-teacher" className="w-auto">
+            {selectedTeacherId === null && <option></option>}
+            {teachers.map((teacher) => (
+                <option key={nanoid()} value={teacher.id}>{teacher.name}</option>
+            ))}
+        </FormSelect>)
+        }
+    </>
 }
 
 export default TeacherSettings;

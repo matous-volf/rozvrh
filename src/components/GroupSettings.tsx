@@ -64,39 +64,37 @@ function GroupSettings(props: Props) {
         setSelectedGroupIdsCallback(selectedGroupIds);
     }, [setSelectedGroupIdsCallback, selectedGroupIds]);
 
-    return (
-        <>
-            <h3>Skupiny</h3>
-            <p>Své skupiny najdete v rozvrhu aplikace Bakaláři.</p>
+    return <>
+        <h3>Skupiny</h3>
+        <p>Své skupiny najdete v rozvrhu aplikace Bakaláři.</p>
 
-            {(props.isTimetableQueryLoading ? (<p>Načítání...</p>
-            ) : props.isTimetableQueryError ? (<p>Skupiny se nepodařilo načíst.</p>
-            ) : props.timetable === null ? (<></>
-            ) : props.timetable.groupGroups.length < 1 ? (<p>Tato třída neobsahuje žádné skupiny.</p>
-            ) : <div className="d-flex flex-column gap-2">
-                {props.timetable.groupGroups.sort().map((groupGroup) => (
-                    <div key={nanoid()}>
-                        {groupGroup
-                            .sort((a, b) => a.isBlank ? 1 : b.isBlank ? -1 : a.id.localeCompare(b.id))
-                            .map((group) => (
-                                <FormCheck
-                                    inline={true}
-                                    label={`${group.isBlank ? "volno" : group.name}`}
-                                    name={groupGroup.map((group => group.id)).toString()}
-                                    type={"radio"}
-                                    id={"input-group-" + group.id}
-                                    onChange={handleChange}
-                                    key={nanoid()}
-                                    data-group-id={group.id}
-                                    checked={selectedGroupIds.includes(group.id)}
-                                />
-                            ))}
-                    </div>
-                ))}
-            </div>)
-            }
-        </>
-    );
+        {(props.isTimetableQueryLoading ? (<p>Načítání...</p>
+        ) : props.isTimetableQueryError ? (<p>Skupiny se nepodařilo načíst.</p>
+        ) : props.timetable === null ? (<></>
+        ) : props.timetable.groupGroups.length < 1 ? (<p>Tato třída neobsahuje žádné skupiny.</p>
+        ) : <div className="d-flex flex-column gap-2">
+            {props.timetable.groupGroups.sort().map((groupGroup) => (
+                <div key={nanoid()}>
+                    {groupGroup
+                        .sort((a, b) => a.isBlank ? 1 : b.isBlank ? -1 : a.id.localeCompare(b.id))
+                        .map((group) => (
+                            <FormCheck
+                                inline={true}
+                                label={`${group.isBlank ? "volno" : group.name}`}
+                                name={groupGroup.map((group => group.id)).toString()}
+                                type={"radio"}
+                                id={"input-group-" + group.id}
+                                onChange={handleChange}
+                                key={nanoid()}
+                                data-group-id={group.id}
+                                checked={selectedGroupIds.includes(group.id)}
+                            />
+                        ))}
+                </div>
+            ))}
+        </div>)
+        }
+    </>
 }
 
 export default GroupSettings

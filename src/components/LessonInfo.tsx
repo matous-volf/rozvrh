@@ -24,11 +24,9 @@ function LessonInfo(props: Props) {
         </>
     }
 
-    return (
-        <div className="d-flex flex-row justify-content-center gap-3">
-            {content}
-        </div>
-    );
+    return <div className="d-flex flex-row justify-content-center gap-3">
+        {content}
+    </div>
 }
 
 export default LessonInfo

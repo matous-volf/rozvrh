@@ -33,21 +33,19 @@ function ClassSettings(props: Props) {
         }
     }, [classIds, isLoading]);
 
-    return (
-        <>
-            <h3>Třída</h3>
-            {(isLoading ? (<p>Načítání...</p>
-            ) : isError ? (<p>Třídy se nepodařilo načíst. Škola pravděpodobně nepovolila veřejný rozvrh.</p>
-            ) : <FormSelect onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId ?? ""}
-                            id="input-class" className="w-auto">
-                {selectedClassId === null && <option></option>}
-                {classIds.map((classId) => (
-                    <option key={nanoid()} value={classId.id}>{classId.name}</option>
-                ))}
-            </FormSelect>)
-            }
-        </>
-    );
+    return <>
+        <h3>Třída</h3>
+        {(isLoading ? (<p>Načítání...</p>
+        ) : isError ? (<p>Třídy se nepodařilo načíst. Škola pravděpodobně nepovolila veřejný rozvrh.</p>
+        ) : <FormSelect onChange={(e) => setSelectedClassId(e.target.value)} value={selectedClassId ?? ""}
+                        id="input-class" className="w-auto">
+            {selectedClassId === null && <option></option>}
+            {classIds.map((classId) => (
+                <option key={nanoid()} value={classId.id}>{classId.name}</option>
+            ))}
+        </FormSelect>)
+        }
+    </>
 }
 
 export default ClassSettings;
