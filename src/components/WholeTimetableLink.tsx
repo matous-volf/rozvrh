@@ -10,16 +10,10 @@ interface Props {
     selectedSchool: School;
 }
 
-function WholeTimetableLink(props: Props) {
-    return (
-        <>
-            <Link to={props.timetable.urlCurrent} className="btn btn-outline-primary" target="_blank">
-                {props.selectedSchool.id === deltaSchoolId
-                    ? <img src={deltaTimetableLogo} alt="logo Delta timetable" className="delta-timetable-logo"/>
-                    : <><i className="bi bi-calendar-week-fill"></i> celý rozvrh</>}
-            </Link>
-        </>
-    );
+export default function WholeTimetableLink(props: Props) {
+    return <Link to={props.timetable.urlCurrent} className="btn btn-outline-primary" target="_blank">
+        {props.selectedSchool.id === deltaSchoolId
+            ? <img src={deltaTimetableLogo} alt="logo Delta timetable" className="delta-timetable-logo"/>
+            : <><i className="bi bi-calendar-week-fill"></i> celý rozvrh</>}
+    </Link>
 }
-
-export default WholeTimetableLink;

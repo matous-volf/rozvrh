@@ -9,7 +9,7 @@ interface Props {
     onChange?: (value: number) => void;
 }
 
-function Slider({min, max, step, defaultValue, onChange}: Props) {
+export default function Slider({min, max, step, defaultValue, onChange}: Props) {
     const [value, setValue] = useState(defaultValue);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,5 +25,3 @@ function Slider({min, max, step, defaultValue, onChange}: Props) {
         <span className="text-end" style={{minWidth: `${1 + Math.floor(Math.log10(max)) / 1.75}rem`}}>{value}</span>
     </div>
 }
-
-export default Slider;

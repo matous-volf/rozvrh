@@ -7,7 +7,7 @@ interface Props {
     isLongBreak: boolean;
 }
 
-function LessonInfo(props: Props) {
+export default function LessonInfo(props: Props) {
     let content;
 
     if (props.isLongBreak) {
@@ -24,11 +24,7 @@ function LessonInfo(props: Props) {
         </>
     }
 
-    return (
-        <div className="d-flex flex-row justify-content-center gap-3">
-            {content}
-        </div>
-    );
+    return <div className="d-flex flex-row justify-content-center gap-3">
+        {content}
+    </div>
 }
-
-export default LessonInfo

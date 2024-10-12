@@ -31,7 +31,7 @@ interface Props {
     setSelectedGroupIdsCallback: (groupIds: string[]) => void;
 }
 
-function SettingsPage(props: Props) {
+export default function SettingsPage(props: Props) {
     const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>(props.selectedGroupIds);
 
     const handleSave = () => {
@@ -75,5 +75,3 @@ function SettingsPage(props: Props) {
         </Link>
     </div>
 }
-
-export default SettingsPage
