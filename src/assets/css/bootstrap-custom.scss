@@ -7,3 +7,7 @@ $primary: #40A351;
 .btn-outline-primary:hover, btn-outline-primary:active, btn-outline-primary:focus, {
   color: white !important;
 }
+
+.progress {
+  --bs-progress-bar-transition: none
+}

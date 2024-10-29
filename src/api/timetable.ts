@@ -156,8 +156,9 @@ async function getTimetable(permanentUrl: string,
         }
 
     const hourTimes = createHourTimes(currentHtml);
+    const hourTimesMinutesDivisibleByNumber = hourTimes.every(x => x.start.minute % 5 === 0 && x.end.minute % 5 === 0) ? 5 : 1;
 
-    return new Timetable(daysCurrent, groupGroups, hourTimes, currentUrl);
+    return new Timetable(daysCurrent, groupGroups, hourTimes, hourTimesMinutesDivisibleByNumber, currentUrl);
 }
 
 function createDays(html: string, selectedGroupIds: string[], selectAllGroups: boolean): Day[] {
