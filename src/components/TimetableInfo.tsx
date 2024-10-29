@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {DateTime} from "luxon";
 import Timetable from "../models/Timetable.ts";
 import TimeRemaining from "./TimeRemaining.tsx";
@@ -28,15 +28,26 @@ export default function TimetableInfo(props: Props) {
     const lastHourIndex = hours === undefined ? -1 :
         hours.length - [...hours].reverse().findIndex((hour) => hour.isSelected) - 1; // the last selected index
 
+    const timeRemaining = useMemo(
+        () => <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
+                             firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [currentTime.second]
+    )
+
+    const lessons = useMemo(
+        () => <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime}
+                       hourTimes={props.timetable.hourTimes}
+                       hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [Math.trunc(currentTime.minute / props.timetable.hourTimesMinutesGreatestCommonDivisor), currentTime.hour]);
+
     if (firstHourIndex === -1 || lastHourIndex === -1 || hours === undefined) {
-        return <p>Dnes není žádné vyučování.</p>
+        return <p>Dnes není žádné vyučování.</p>;
     }
 
     return <div className="d-flex flex-column gap-5">
-        <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
-                       firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
-        <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime}
-                 hourTimes={props.timetable.hourTimes}
-                 hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
+        {timeRemaining}
+        {lessons}
     </div>
 }
