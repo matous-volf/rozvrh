@@ -8,6 +8,8 @@ $primary: #40A351;
   color: white !important;
 }
 
+/* So that the bar does not slide back slowly at the end of each lesson / break and jumps immediately instead. Also, has
+  a significant impact on the app's performance (https://github.com/matous-volf/rozvrh/pull/78). */
 .progress {
   --bs-progress-bar-transition: none
 }
