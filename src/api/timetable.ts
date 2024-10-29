@@ -156,9 +156,12 @@ async function getTimetable(permanentUrl: string,
         }
 
     const hourTimes = createHourTimes(currentHtml);
-    const hourTimesMinutesDivisibleByNumber = hourTimes.every(x => x.start.minute % 5 === 0 && x.end.minute % 5 === 0) ? 5 : 1;
+    // https://napoveda.bakalari.cz/ro_konfigurace_konfzobrazeni.htm
+    const hourTimesMinutesGreatestCommonDivisor = hourTimes.every(
+        hourTime => hourTime.start.minute % 5 === 0 && hourTime.end.minute % 5 === 0
+    ) ? 5 : 1;
 
-    return new Timetable(daysCurrent, groupGroups, hourTimes, hourTimesMinutesDivisibleByNumber, currentUrl);
+    return new Timetable(daysCurrent, groupGroups, hourTimes, hourTimesMinutesGreatestCommonDivisor, currentUrl);
 }
 
 function createDays(html: string, selectedGroupIds: string[], selectAllGroups: boolean): Day[] {

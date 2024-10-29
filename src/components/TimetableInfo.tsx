@@ -28,19 +28,19 @@ export default function TimetableInfo(props: Props) {
     const lastHourIndex = hours === undefined ? -1 :
         hours.length - [...hours].reverse().findIndex((hour) => hour.isSelected) - 1; // the last selected index
 
-    const timeRemaining = useMemo(() =>
-            <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
-                           firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    , [currentTime.second])
+    const timeRemaining = useMemo(
+        () => <TimeRemaining currentTime={currentTime} hourTimes={props.timetable.hourTimes} hours={hours}
+                             firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [currentTime.second]
+    )
 
-    const lessons = useMemo(() =>
-    <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime}
-                     hourTimes={props.timetable.hourTimes}
-                     hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    , [Math.trunc(currentTime.minute / props.timetable.hourTimesMinutesDivisibleByNumber), currentTime.hour]);
-    // https://napoveda.bakalari.cz/ro_konfigurace_konfzobrazeni.htm
+    const lessons = useMemo(
+        () => <Lessons teacherModeEnabled={props.teacherModeEnabled} currentTime={currentTime}
+                       hourTimes={props.timetable.hourTimes}
+                       hours={hours} firstHourIndex={firstHourIndex} lastHourIndex={lastHourIndex}/>,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [Math.trunc(currentTime.minute / props.timetable.hourTimesMinutesGreatestCommonDivisor), currentTime.hour]);
 
     if (firstHourIndex === -1 || lastHourIndex === -1 || hours === undefined) {
         return <p>Dnes není žádné vyučování.</p>;
