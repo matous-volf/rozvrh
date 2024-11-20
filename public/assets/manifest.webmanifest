@@ -2,7 +2,7 @@
   "name": "Rozvrh hodin",
   "short_name": "Rozvrh",
   "background_color": "#40a351",
-  "description": "Zobrazuje nynější a následující předmět a čas zbývající do další hodiny na Deltě.",
+  "description": "Zobrazuje odpočet doby zbývající do další hodiny školního rozvrhu spolu s nadcházejícími předměty. Podporuje školy používající systém Bakaláři.",
   "display": "standalone",
   "icons": [
     {
