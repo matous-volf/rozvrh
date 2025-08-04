@@ -24,7 +24,7 @@
     "react-bootstrap": "^2.10.5",
     "react-bootstrap-typeahead": "^6.3.2",
     "react-dom": "^18.3.1",
-    "react-ga4": "^2.1.0",
+    "react-helmet": "^6.1.0",
     "react-router-dom": "^6.26.2",
     "usehooks-ts": "^3.1.0"
   },
@@ -32,6 +32,7 @@
     "@eslint/compat": "^1.1.1",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
+    "@types/react-helmet": "^6.1.11",
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",
     "@vitejs/plugin-react": "^4.3.2",
