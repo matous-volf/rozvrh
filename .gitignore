@@ -12,3 +12,5 @@ dist
 dist-ssr
 dist.zip
 *.local
+
+/docker-compose.yaml
