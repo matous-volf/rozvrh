@@ -33,8 +33,8 @@ export default function MainPage(props: Props) {
             <Button variant="outline-secondary" onClick={() => navigate("/nastaveni")}>
                 <i className="bi bi-gear-fill"></i> nastavení
             </Button>
-            <Button variant="outline-secondary" href="https://github.com/matous-volf/rozvrh" target="_blank">
-                <i className="bi bi-github"></i> GitHub
+            <Button variant="outline-secondary" href="https://gitea.com/matous-volf/rozvrh" target="_blank">
+                <i className="bi bi-file-earmark-code"></i> zdrojový kód
             </Button>
         </InputGroup>
 
