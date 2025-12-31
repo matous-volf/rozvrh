@@ -1,3 +1,8 @@
+> [!IMPORTANT]  
+> This project has been moved to Gitea: https://gitea.com/matous-volf/rozvrh.
+
+---
+
 # Rozvrh
 
 Zobrazuje odpočet doby zbývající do další hodiny školního rozvrhu spolu s nadcházejícími předměty. Podporuje školy
